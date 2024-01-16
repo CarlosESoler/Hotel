@@ -5,7 +5,6 @@ import br.com.hotel.data.dto.guest.CheckInGuestDTO;
 import br.com.hotel.data.dto.guest.CreateGuestDTO;
 import br.com.hotel.data.model.Guest;
 import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
-import br.com.hotel.domain.repository.GuestRepository;
 import br.com.hotel.domain.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

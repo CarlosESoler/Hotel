@@ -1,7 +1,5 @@
 package br.com.hotel.data.dto.guest;
 
-import br.com.hotel.data.model.Room;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

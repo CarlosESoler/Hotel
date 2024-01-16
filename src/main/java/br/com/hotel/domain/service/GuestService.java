@@ -9,7 +9,6 @@ import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import br.com.hotel.domain.repository.GuestRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,7 +48,7 @@ public class GuestService {
     }
 
     /**
-     *  Deleta um hospede pelo rg
+     * Deleta um hospede pelo rg
      * @param rg
      * @return String
      * @throws GuestNotFoundException

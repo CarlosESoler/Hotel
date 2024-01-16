@@ -15,14 +15,14 @@ public class RoomService {
     @Autowired
     RoomRepository roomRepository;
 
-    public Room createRoom(CreateRoomDTO roomDTO) {
-        Optional.ofNullable(roomRepository.findByRoomNumber(roomDTO.roomNumber()))
+    public Room createRoom(CreateRoomDTO dataRoom) {
+        Optional.ofNullable(roomRepository.findByRoomNumber(dataRoom.roomNumber()))
                 .ifPresent(existingRoom -> {
                     throw new RuntimeException("O quarto já está registrado.");
                 });
 
         Room room = new Room();
-        BeanUtils.copyProperties(roomDTO, room);
+        BeanUtils.copyProperties(dataRoom, room);
 
         return roomRepository.save(room);
     }
