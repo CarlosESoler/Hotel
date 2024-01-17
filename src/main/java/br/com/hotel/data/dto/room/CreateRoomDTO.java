@@ -1,7 +1,7 @@
 package br.com.hotel.data.dto.room;
 
-import br.com.hotel.data.enums.RoomType;
-import br.com.hotel.data.enums.Status;
+import br.com.hotel.data.model.room.RoomType;
+import br.com.hotel.data.model.room.RoomStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -9,7 +9,7 @@ public record CreateRoomDTO(
         String roomNumber,
         String observation,
         @Enumerated(EnumType.STRING)
-        Status status,
+        RoomStatus roomStatus,
         @Enumerated(EnumType.STRING)
          RoomType type
 ){

@@ -1,6 +1,6 @@
 package br.com.hotel.domain.repository;
 
-import br.com.hotel.data.model.Room;
+import br.com.hotel.data.model.room.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

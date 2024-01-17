@@ -1,5 +1,6 @@
-package br.com.hotel.data.model;
+package br.com.hotel.data.model.guest;
 
+import br.com.hotel.data.model.room.Room;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
@@ -17,7 +18,7 @@ public class Guest {
     private UUID id;
 
     private String rg;
-    private String cpf;
+    private String document;
     private String carNumber;
     private LocalDate birthDate;
     private LocalDateTime checkIn;
@@ -25,14 +26,14 @@ public class Guest {
     private String fullName;
     private String phone;
     private String motherName;
+    private String email;
+
+    // TODO - Make a list of companions
+
     private String address;
     private String zipCode;
     private String city;
     private String state;
-    private String email;
-
-    // TODO - Make a list of companions
-    // TODO - Make a list of rooms
 
     @OneToOne
     private Room room;

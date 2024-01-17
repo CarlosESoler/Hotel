@@ -1,7 +1,7 @@
 package br.com.hotel.domain.service;
 
 import br.com.hotel.data.dto.room.CreateRoomDTO;
-import br.com.hotel.data.model.Room;
+import br.com.hotel.data.model.room.Room;
 import br.com.hotel.domain.repository.RoomRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

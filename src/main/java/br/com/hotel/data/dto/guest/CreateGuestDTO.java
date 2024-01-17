@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public record CreateGuestDTO(
         String rg,
-        String cpf,
+        String document,
         String carNumber,
         LocalDate birthDate,
         LocalDateTime checkIn,

@@ -2,11 +2,12 @@ package br.com.hotel.domain.service;
 
 import br.com.hotel.data.dto.guest.CheckInGuestDTO;
 import br.com.hotel.data.dto.guest.CreateGuestDTO;
-import br.com.hotel.data.model.Guest;
-import br.com.hotel.data.model.Room;
+import br.com.hotel.data.model.guest.Guest;
+import br.com.hotel.data.model.room.Room;
 import br.com.hotel.domain.exceptions.guest.GuestAlreadyExistsException;
 import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import br.com.hotel.domain.repository.GuestRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class GuestService {
     RoomService roomService;
 
     public Guest createGuest(CreateGuestDTO createGuestDTO) {
-        Optional.ofNullable(guestRepository.findByRgOrCpf(createGuestDTO.rg(), createGuestDTO.cpf()))
+        Optional.ofNullable(guestRepository.findByRgOrCpf(createGuestDTO.rg(), createGuestDTO.document()))
         .ifPresent(existingGuest -> {
             try {
                 throw new GuestAlreadyExistsException("Usuário já existe no sistema. ", existingGuest.getRg());
@@ -68,6 +69,7 @@ public class GuestService {
         return guestRepository.findAll();
     }
 
+    @Transactional
     public Guest checkInGuest(CheckInGuestDTO guestDataCheckIn) throws GuestNotFoundException {
         Guest guest = getGuestByRg(guestDataCheckIn.rg());
 

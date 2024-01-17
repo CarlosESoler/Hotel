@@ -1,7 +1,6 @@
-package br.com.hotel.data.model;
+package br.com.hotel.data.model.room;
 
-import br.com.hotel.data.enums.RoomType;
-import br.com.hotel.data.enums.Status;
+import br.com.hotel.data.model.guest.Guest;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
@@ -21,7 +20,7 @@ public class Room {
     private String observation;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private RoomStatus roomStatus;
 
     @Enumerated(EnumType.STRING)
     private RoomType type;

@@ -1,4 +1,4 @@
-package br.com.hotel.data.enums;
+package br.com.hotel.data.model.room;
 
 public enum RoomType {
     KITNET,
