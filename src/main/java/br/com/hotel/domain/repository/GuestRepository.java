@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface GuestRepository extends JpaRepository<Guest, UUID> {
 
     Guest findByRg(String rg);
-    Guest findByRgOrCpf(String rg, String cpf);
-    Guest updateGuestByRg(String rg, Guest guest);
+    Guest findByRgOrDocument(String rg, String document);
+    Guest findByDocument(String document);
 
 }
