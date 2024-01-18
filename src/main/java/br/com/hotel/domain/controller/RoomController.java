@@ -21,8 +21,8 @@ public class RoomController {
     RoomRepository roomRepository;
 
     @PostMapping
-    public ResponseEntity<Room> createRoom(@RequestBody CreateRoomDTO dataRoom) {
-        return ResponseEntity.ok(roomService.createRoom(dataRoom));
+    public ResponseEntity<Room> createRoom(@RequestBody CreateRoomDTO createDataRoom) {
+        return ResponseEntity.ok(roomService.createRoom(createDataRoom));
     }
 
     @GetMapping

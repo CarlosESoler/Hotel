@@ -6,6 +6,7 @@ import br.com.hotel.data.dto.guest.CreateGuestDTO;
 import br.com.hotel.data.model.guest.Guest;
 import br.com.hotel.domain.exceptions.guest.GuestAlreadyExistsException;
 import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
+import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class GuestController {
     }
 
     @PutMapping("/checkin")
-    public ResponseEntity<Guest> checkInGuest(@RequestBody CheckInGuestDTO guest) throws GuestNotFoundException {
-        return ResponseEntity.ok(guestService.checkInGuest(guest));
+    public ResponseEntity<Guest> checkInGuest(@RequestBody CheckInGuestDTO guestDataCheckIn) throws GuestNotFoundException, RoomNotFoundException {
+        return ResponseEntity.ok(guestService.checkInGuest(guestDataCheckIn));
     }
 }
