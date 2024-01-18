@@ -2,6 +2,7 @@ package br.com.hotel.domain.service;
 
 import br.com.hotel.data.dto.room.CreateRoomDTO;
 import br.com.hotel.data.model.room.Room;
+import br.com.hotel.data.model.room.RoomStatus;
 import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.repository.RoomRepository;
 import lombok.val;
@@ -42,13 +43,24 @@ public class RoomService {
      */
     public Room getRoomByNumber(String roomNumber) throws RoomNotFoundException {
         Room room = roomRepository.findByRoomNumber(roomNumber);
-        if(room == null) {
-            throw new RoomNotFoundException("Quarto não encontrado");
-        }
+        verifyIfRoomExists(room.getRoomNumber());
         return room;
+    }
+
+    public RoomStatus verifyRoomStatus(String roomNumber) throws RoomNotFoundException {
+        Room room = roomRepository.findByRoomNumber(roomNumber);
+        verifyIfRoomExists(room.getRoomNumber());
+        return room.getRoomStatus();
     }
 
     public void updateRoom(Room room) {
         roomRepository.save(room);
+    }
+
+    public void verifyIfRoomExists(String roomNumber) throws RoomNotFoundException {
+        Room room = roomRepository.findByRoomNumber(roomNumber);
+        if(room == null) {
+            throw new RoomNotFoundException("Quarto não encontrado");
+        }
     }
 }

@@ -9,6 +9,7 @@ import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.repository.GuestRepository;
 import jakarta.transaction.Transactional;
+import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,14 @@ public class GuestService {
      * @throws GuestAlreadyExistsException
      */
     public Guest createGuest(CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsException {
-        Optional.ofNullable(guestRepository.findByRgOrDocument(createGuestDTO.rg(), createGuestDTO.document()))
-        .orElseThrow(() -> new GuestAlreadyExistsException("Hospede já cadastrado com esse RG ou CPF/CPNJ: ", createGuestDTO.document()));
+        Optional.ofNullable(guestRepository.findByDocument(createGuestDTO.document()))
+                .ifPresent(existingGuest -> {
+                    try {
+                        throw new GuestAlreadyExistsException("Hospede já está registrado.", existingGuest.getDocument());
+                    } catch (GuestAlreadyExistsException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
         Guest guest = new Guest();
         BeanUtils.copyProperties(createGuestDTO, guest);
@@ -46,9 +53,7 @@ public class GuestService {
      * @return Guest
      */
     public Guest getGuestByRg(String rg) throws GuestNotFoundException {
-        Guest guest = guestRepository.findByRg(rg);
-        verifyIfGuestExists(guest.getRg());
-        return guest;
+        return verifyIfGuestExists(rg);
     }
 
     /**
@@ -94,11 +99,11 @@ public class GuestService {
         return guestRepository.save(guest);
     }
 
-    private void verifyIfGuestExists(String rg) throws GuestNotFoundException {
+    private Guest verifyIfGuestExists(String rg) throws GuestNotFoundException {
         Guest guest = guestRepository.findByRg(rg);
-
         if(guest == null) {
             throw new GuestNotFoundException("Hospede não encontrado");
         }
+        return guest;
     }
 }
