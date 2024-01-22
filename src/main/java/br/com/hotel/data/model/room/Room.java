@@ -15,12 +15,12 @@ public class Room {
     @UuidGenerator
     private UUID id;
 
-    private String roomNumber;
+    private String number;
 
     private String observation;
 
     @Enumerated(EnumType.STRING)
-    private RoomStatus roomStatus;
+    private RoomStatus status;
 
     @Enumerated(EnumType.STRING)
     private RoomType type;

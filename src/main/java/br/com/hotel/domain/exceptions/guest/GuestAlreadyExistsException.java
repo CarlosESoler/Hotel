@@ -18,6 +18,6 @@ public class GuestAlreadyExistsException extends Exception {
     }
 
     public GuestAlreadyExistsException(String e, String document) {
-        super(e + "RG do hospede ja cadastrado: " + document);
+        super(e + " CPF / CPNJ do hospede ja cadastrado: " + document);
     }
 }

@@ -2,6 +2,7 @@ package br.com.hotel.domain.controller;
 
 import br.com.hotel.data.dto.room.CreateRoomDTO;
 import br.com.hotel.data.model.room.Room;
+import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.repository.RoomRepository;
 import br.com.hotel.domain.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,18 @@ public class RoomController {
         return ResponseEntity.ok(roomService.createRoom(createDataRoom));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Room>> getRooms() {
         return ResponseEntity.ok(roomRepository.findAll());
+    }
+
+    @GetMapping("/{roomNumber}")
+    public ResponseEntity<Room> getRoomByNumber(@PathVariable String roomNumber) throws RoomNotFoundException {
+        return ResponseEntity.ok(roomService.getRoomByNumber(roomNumber));
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<Room>> getAllRoomsWithSpecificStatus(@RequestParam String status) {
+        return ResponseEntity.ok(roomService.getAllRoomsWithSpecificStatus(status));
     }
 }

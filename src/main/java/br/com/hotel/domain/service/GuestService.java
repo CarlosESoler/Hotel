@@ -9,7 +9,6 @@ import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.repository.GuestRepository;
 import jakarta.transaction.Transactional;
-import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,16 +32,9 @@ public class GuestService {
      * @throws GuestAlreadyExistsException
      */
     public Guest createGuest(CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsException {
-        Optional.ofNullable(guestRepository.findByDocument(createGuestDTO.document()))
-                .ifPresent(existingGuest -> {
-                    try {
-                        throw new GuestAlreadyExistsException("Hospede já está registrado.", existingGuest.getDocument());
-                    } catch (GuestAlreadyExistsException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        Guest guest = Optional.ofNullable(guestRepository.findByRgOrDocument(createGuestDTO.rg(), createGuestDTO.document()))
+                .orElseThrow(() -> new GuestAlreadyExistsException("Hospede já está registrado.", createGuestDTO.document()));
 
-        Guest guest = new Guest();
         BeanUtils.copyProperties(createGuestDTO, guest);
         return guestRepository.save(guest);
     }
@@ -53,7 +45,7 @@ public class GuestService {
      * @return Guest
      */
     public Guest getGuestByRg(String rg) throws GuestNotFoundException {
-        return verifyIfGuestExists(rg);
+        return verifyIfGuestExistsByRg(rg);
     }
 
     /**
@@ -85,7 +77,8 @@ public class GuestService {
     public Guest checkInGuest(CheckInGuestDTO guestDataCheckIn) throws GuestNotFoundException, RoomNotFoundException {
         Guest guest = getGuestByRg(guestDataCheckIn.document());
 
-        if(guest.getRoom() != null) {
+        // TODO - Make a exception to check if guest is already in a room
+        if(guest.getCheckIn() != null) {
             throw new RuntimeException("Hospede já está em um quarto");
         }
 
@@ -93,13 +86,11 @@ public class GuestService {
         BeanUtils.copyProperties(guestDataCheckIn, guest);
 
         guest.setRoom(room);
-        room.setGuest(guest);
-
-        roomService.updateRoom(room);
+        roomService.roomGuestCheckIn(guest, room);
         return guestRepository.save(guest);
     }
 
-    private Guest verifyIfGuestExists(String rg) throws GuestNotFoundException {
+    private Guest verifyIfGuestExistsByRg(String rg) throws GuestNotFoundException {
         Guest guest = guestRepository.findByRg(rg);
         if(guest == null) {
             throw new GuestNotFoundException("Hospede não encontrado");
