@@ -1,5 +1,7 @@
 package br.com.hotel.data.dto.room;
 
+import br.com.hotel.data.model.guest.Guest;
+import br.com.hotel.data.model.room.Room;
 import br.com.hotel.data.model.room.RoomStatus;
 import br.com.hotel.data.model.room.RoomType;
 import jakarta.persistence.EnumType;
@@ -20,5 +22,17 @@ public record GetRoomAndGuestDTO(
         String guestDocument,
         LocalDateTime checkIn,
         LocalDateTime checkOut
-){
+) {
+    public GetRoomAndGuestDTO(Room room, Guest Guest) {
+        this(
+                room.getNumber(),
+                room.getObservation(),
+                room.getStatus(),
+                room.getType(),
+                Guest.getFullName(),
+                Guest.getDocument(),
+                Guest.getCheckIn(),
+                Guest.getCheckOut()
+        );
+    }
 }

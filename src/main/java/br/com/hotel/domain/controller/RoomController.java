@@ -1,25 +1,35 @@
 package br.com.hotel.domain.controller;
 
+import br.com.hotel.data.dto.guest.CheckInRequestDTO;
 import br.com.hotel.data.dto.room.CreateRoomDTO;
+import br.com.hotel.data.model.guest.Guest;
 import br.com.hotel.data.model.room.Room;
+import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.repository.RoomRepository;
 import br.com.hotel.domain.service.RoomService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/hotel/room")
+@Transactional
+@RequestMapping("/hotel/rooms")
 public class RoomController {
 
-    @Autowired
     RoomService roomService;
-
-    @Autowired
     RoomRepository roomRepository;
+
+    public RoomController(RoomService roomService, RoomRepository roomRepository) {
+        this.roomService = roomService;
+        this.roomRepository = roomRepository;
+    }
 
     @PostMapping
     public ResponseEntity<Room> createRoom(@RequestBody CreateRoomDTO createDataRoom) {
@@ -36,8 +46,18 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getRoomByNumber(roomNumber));
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<List<Room>> getAllRoomsWithSpecificStatus(@RequestParam String status) {
+    @GetMapping("/id/{roomId}")
+    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable UUID roomId) {
+        return ResponseEntity.ok(roomRepository.findById(roomId));
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Room>> getAllRoomsWithSpecificStatus(@PathVariable String status) {
         return ResponseEntity.ok(roomService.getAllRoomsWithSpecificStatus(status));
+    }
+
+    @PostMapping("/checkin/{guestRg}")
+    public ResponseEntity<Object> guestCheckIn(@RequestHeader String roomNumber, @PathVariable String guestRg, @RequestBody CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
+         return ResponseEntity.ok(roomService.guestCheckIn(guestRg, roomNumber, guestDataCheckIn));
     }
 }

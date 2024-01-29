@@ -1,100 +1,84 @@
 package br.com.hotel.domain.service;
 
-import br.com.hotel.data.dto.guest.CheckInGuestDTO;
 import br.com.hotel.data.dto.guest.CreateGuestDTO;
 import br.com.hotel.data.model.guest.Guest;
-import br.com.hotel.data.model.room.Room;
 import br.com.hotel.domain.exceptions.guest.GuestAlreadyExistsException;
 import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
-import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.repository.GuestRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+import static jakarta.transaction.Transactional.TxType.MANDATORY;
+
 @Service
+@Transactional(MANDATORY)
 public class GuestService {
 
-    @Autowired
     GuestRepository guestRepository;
 
-    @Autowired
-    RoomService roomService;
+    public GuestService(GuestRepository guestRepository) {
+        this.guestRepository = guestRepository;
+    }
 
     /**
      * Create a new guest
+     *
      * @param createGuestDTO
      * @return Guest
-     * @throws GuestAlreadyExistsException
      */
-    public Guest createGuest(CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsException {
-        Guest guest = Optional.ofNullable(guestRepository.findByRgOrDocument(createGuestDTO.rg(), createGuestDTO.document()))
-                .orElseThrow(() -> new GuestAlreadyExistsException("Hospede já está registrado.", createGuestDTO.document()));
-
-        BeanUtils.copyProperties(createGuestDTO, guest);
+    public Guest createGuest(CreateGuestDTO createGuestDTO) {
+        Optional.ofNullable(guestRepository.findByRgOrDocument(createGuestDTO.rg(), createGuestDTO.document()))
+                .ifPresent(existingGuest -> {
+                    try {
+                        throw new GuestAlreadyExistsException("Hospede já existe no sistema. ", existingGuest.getRg());
+                    } catch (GuestAlreadyExistsException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        Guest guest = new Guest(createGuestDTO);
         return guestRepository.save(guest);
     }
 
     /**
      * Search and get a guest by rg
+     *
      * @param rg
      * @return Guest
      */
     public Guest getGuestByRg(String rg) throws GuestNotFoundException {
-        return verifyIfGuestExistsByRg(rg);
+        Guest guest = guestRepository.findByRg(rg);
+        if (guest == null) {
+            throw new GuestNotFoundException("Hospede não encontrado");
+        }
+        return guest;
     }
 
     /**
      * Delete a guest by rg
+     *
      * @param rg
      * @return String
      * @throws GuestNotFoundException
      */
     public String deleteGuestByRg(String rg) throws GuestNotFoundException {
-        Guest guest = getGuestByRg(rg);
-        guestRepository.delete(guest);
+        guestRepository.delete(getGuestByRg(rg));
         return "Hospede deletado com sucesso";
     }
 
     /**
      * Get all guests
+     *
      * @return List<Guest>
      */
     public List<Guest> getAllGuests() {
         return guestRepository.findAll();
     }
 
-    /**
-     * Check in a guest and set a room
-     * @return Guest with room
-     * @throws GuestNotFoundException
-     */
-    @Transactional
-    public Guest checkInGuest(CheckInGuestDTO guestDataCheckIn) throws GuestNotFoundException, RoomNotFoundException {
-        Guest guest = getGuestByRg(guestDataCheckIn.document());
-
-        // TODO - Make a exception to check if guest is already in a room
-        if(guest.getCheckIn() != null) {
-            throw new RuntimeException("Hospede já está em um quarto");
-        }
-
-        Room room = roomService.getRoomByNumber(guestDataCheckIn.roomNumber());
-        BeanUtils.copyProperties(guestDataCheckIn, guest);
-
-        guest.setRoom(room);
-        roomService.roomGuestCheckIn(guest, room);
-        return guestRepository.save(guest);
-    }
-
-    private Guest verifyIfGuestExistsByRg(String rg) throws GuestNotFoundException {
-        Guest guest = guestRepository.findByRg(rg);
-        if(guest == null) {
-            throw new GuestNotFoundException("Hospede não encontrado");
-        }
-        return guest;
+    public Guest saveGuest(Guest guest) {
+        return guestRepository.saveAndFlush(guest);
     }
 }
