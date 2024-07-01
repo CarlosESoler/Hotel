@@ -1,13 +1,12 @@
 package br.com.hotel.domain.controller;
 
 
-import br.com.hotel.data.dto.guest.CheckInGuestDTO;
 import br.com.hotel.data.dto.guest.CreateGuestDTO;
-import br.com.hotel.data.model.Guest;
+import br.com.hotel.data.model.guest.Guest;
+import br.com.hotel.domain.exceptions.guest.GuestAlreadyExistsException;
 import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
-import br.com.hotel.domain.repository.GuestRepository;
 import br.com.hotel.domain.service.GuestService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/hotel/guest")
+@Transactional
+@RequestMapping("/hotel/guests")
 public class GuestController {
 
-    @Autowired
-    GuestService guestService;
+    private final GuestService guestService;
+
+    public GuestController(GuestService guestService) {
+        this.guestService = guestService;
+    }
 
     @PostMapping
-    public ResponseEntity<Guest> createGuest(@RequestBody CreateGuestDTO createGuestDTO) {
+    public ResponseEntity<Guest> createGuest(@RequestBody CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(guestService.createGuest(createGuestDTO));
     }
@@ -31,25 +34,20 @@ public class GuestController {
     public ResponseEntity<Guest> getGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.getGuestByRg(rg));
     }
-    
-    @GetMapping
-    public ResponseEntity<List<Guest>> getAllGuests() {
-        return ResponseEntity.ok(guestService.getAllGuests());
-    }
 
     @DeleteMapping("/{rg}")
     public ResponseEntity<String> deleteGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.deleteGuestByRg(rg));
     }
 
-    // TODO refactor this method to use a DTO, save a old guest and update it
-    @PutMapping("/{rg}")
-    public ResponseEntity<Guest> updateGuest(@RequestBody Guest guest) {
-        return ResponseEntity.ok(guestService.updateGuest(guest.getRg(), guest));
+    @GetMapping
+    public ResponseEntity<List<Guest>> getAllGuests() {
+        return ResponseEntity.ok(guestService.getAllGuests());
     }
 
-    @PutMapping("/checkin")
-    public ResponseEntity<Guest> checkInGuest(@RequestBody CheckInGuestDTO guest) throws GuestNotFoundException {
-        return ResponseEntity.ok(guestService.checkInGuest(guest));
-    }
+    /* @PostMapping("/checkin")
+    public ResponseEntity<Guest> checkIn(@RequestBody Guest guest) {
+        return ResponseEntity.ok(guestService.checkIn(guest));
+    } */
+
 }

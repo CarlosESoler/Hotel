@@ -1,40 +1,91 @@
 package br.com.hotel.domain.service;
 
+import br.com.hotel.data.dto.guest.CheckInRequestDTO;
 import br.com.hotel.data.dto.room.CreateRoomDTO;
-import br.com.hotel.data.model.Room;
+import br.com.hotel.data.model.guest.Guest;
+import br.com.hotel.data.model.room.Room;
+import br.com.hotel.data.model.room.RoomStatus;
+import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
+import br.com.hotel.domain.exceptions.room.RoomNotFoundException;
 import br.com.hotel.domain.repository.RoomRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+import static jakarta.transaction.Transactional.TxType.MANDATORY;
+
 @Service
+@Transactional(MANDATORY)
 public class RoomService {
 
-    @Autowired
     RoomRepository roomRepository;
+    GuestService guestService;
 
-    public Room createRoom(CreateRoomDTO roomDTO) {
-        Optional.ofNullable(roomRepository.findByRoomNumber(roomDTO.roomNumber()))
+    public RoomService(RoomRepository roomRepository, GuestService guestService) {
+        this.roomRepository = roomRepository;
+        this.guestService = guestService;
+    }
+
+    /**
+     * Create a new room
+     *
+     * @param createRoomDTO
+     * @return Room
+     */
+    public Room createRoom(CreateRoomDTO createRoomDTO) {
+        Optional.ofNullable(roomRepository.findByNumber(createRoomDTO.number()))
                 .ifPresent(existingRoom -> {
                     throw new RuntimeException("O quarto já está registrado.");
                 });
 
-        Room room = new Room();
-        BeanUtils.copyProperties(roomDTO, room);
+        Room room = new Room(createRoomDTO);
 
         return roomRepository.save(room);
     }
 
-    public Room getRoomByNumber(String roomNumber) {
-        if(roomRepository.findByRoomNumber(roomNumber) == null) {
-            throw new RuntimeException("Quarto não encontrado");
+    /**
+     * Search and get a room by room number
+     *
+     * @param roomNumber
+     * @return room
+     * @throws RuntimeException
+     */
+    public Room getRoomByNumber(String roomNumber) throws RoomNotFoundException {
+        Room room = roomRepository.findByNumber(roomNumber);
+        if (room == null) {
+            throw new RoomNotFoundException("Quarto não encontrado");
         }
-        return roomRepository.findByRoomNumber(roomNumber);
+        return room;
     }
 
-    public void updateRoom(Room room) {
+    public List<Room> getAllRoomsWithSpecificStatus(String status) {
+        RoomStatus roomStatus = RoomStatus.valueOf(status);
+        return roomRepository.findAllByStatus(roomStatus);
+    }
+
+    public Object guestCheckIn(String guesRg, String roomNumber, CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
+        Room room = getRoomByNumber(roomNumber);
+        Guest guest = guestService.getGuestByRg(guesRg);
+        if(room.getStatus().equals(RoomStatus.OCCUPIED)) {
+            throw new RuntimeException("Quarto já está ocupado");
+        }
+
+        if(guest.getRoom() != null) {
+            throw new RuntimeException("Hospede já está em um quarto");
+        }
+
+        room.setStatus(RoomStatus.OCCUPIED);
+        room.setGuest(guestService.getGuestByRg(guesRg));
+
+        guest.setRoom(room);
+        guest.setCheckIn(guestDataCheckIn.checkIn());
+        guest.setCheckOut(guestDataCheckIn.checkOut());
         roomRepository.save(room);
+
+        return guestService.saveGuest(guest);
+
+
     }
 }
