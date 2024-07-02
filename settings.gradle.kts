@@ -1,1 +1,1 @@
-rootProject.name = "GuestCard"
+rootProject.name = "Hotel"
