@@ -2,7 +2,7 @@ package hotel.domain.controller;
 
 
 import hotel.data.dto.guest.CreateGuestDTO;
-import hotel.data.model.guest.Guest;
+import hotel.data.entity.guest.Guest;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsException;
 import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.GuestService;

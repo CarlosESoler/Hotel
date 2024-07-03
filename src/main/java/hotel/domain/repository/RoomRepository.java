@@ -1,7 +1,7 @@
 package hotel.domain.repository;
 
-import hotel.data.model.room.Room;
-import hotel.data.model.room.RoomStatus;
+import hotel.data.entity.room.Room;
+import hotel.data.entity.room.RoomStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

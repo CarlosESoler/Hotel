@@ -1,21 +1,18 @@
-package hotel.data.model.room;
+package hotel.data.entity.room;
 
 import hotel.data.dto.room.CreateRoomDTO;
-import hotel.data.model.guest.Guest;
+import hotel.data.entity.guest.Guest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.UuidGenerator;
-
-import java.util.UUID;
 
 @Entity
 @Data
 public class Room {
 
     @Id
-    @UuidGenerator
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     private String number;
 

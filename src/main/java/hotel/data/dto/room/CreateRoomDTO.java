@@ -1,7 +1,7 @@
 package hotel.data.dto.room;
 
-import hotel.data.model.room.RoomStatus;
-import hotel.data.model.room.RoomType;
+import hotel.data.entity.room.RoomStatus;
+import hotel.data.entity.room.RoomType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 

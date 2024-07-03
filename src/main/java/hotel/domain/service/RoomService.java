@@ -2,9 +2,9 @@ package hotel.domain.service;
 
 import hotel.data.dto.guest.CheckInRequestDTO;
 import hotel.data.dto.room.CreateRoomDTO;
-import hotel.data.model.guest.Guest;
-import hotel.data.model.room.Room;
-import hotel.data.model.room.RoomStatus;
+import hotel.data.entity.guest.Guest;
+import hotel.data.entity.room.Room;
+import hotel.data.entity.room.RoomStatus;
 import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;

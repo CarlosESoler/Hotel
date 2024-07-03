@@ -1,4 +1,4 @@
-package hotel.data.model.room;
+package hotel.data.entity.room;
 
 public enum RoomStatus {
     OCCUPIED,
