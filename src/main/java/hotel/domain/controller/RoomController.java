@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @Transactional
-@RequestMapping("/hotel/rooms")
+@RequestMapping("/hotel/room")
 public class RoomController {
 
     RoomService roomService;

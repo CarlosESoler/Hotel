@@ -44,8 +44,4 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(CheckInRequestDTO checkInRequestDTO) {
-        this.setCheckIn(checkInRequestDTO.checkIn());
-        this.setCheckOut(checkInRequestDTO.checkOut());
-    }
 }

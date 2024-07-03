@@ -19,9 +19,7 @@ public record GetRoomAndGuestDTO(
 
         // Guest information's
         String guestName,
-        String guestDocument,
-        LocalDateTime checkIn,
-        LocalDateTime checkOut
+        String guestDocument
 ) {
     public GetRoomAndGuestDTO(Room room, Guest Guest) {
         this(
@@ -30,9 +28,7 @@ public record GetRoomAndGuestDTO(
                 room.getStatus(),
                 room.getType(),
                 Guest.getFullName(),
-                Guest.getDocument(),
-                Guest.getCheckIn(),
-                Guest.getCheckOut()
+                Guest.getDocument()
         );
     }
 }

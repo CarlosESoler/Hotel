@@ -80,8 +80,6 @@ public class RoomService {
         room.setGuest(guestService.getGuestByRg(guesRg));
 
         guest.setRoom(room);
-        guest.setCheckIn(guestDataCheckIn.checkIn());
-        guest.setCheckOut(guestDataCheckIn.checkOut());
         roomRepository.save(room);
 
         return guestService.saveGuest(guest);
