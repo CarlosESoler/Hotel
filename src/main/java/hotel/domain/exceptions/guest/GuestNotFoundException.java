@@ -1,4 +1,4 @@
-package br.com.hotel.domain.exceptions.guest;
+package hotel.domain.exceptions.guest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +17,7 @@ public class GuestNotFoundException extends Exception {
         }
     }
 
-    public GuestNotFoundException(String e) {
-        super(e);
+    public GuestNotFoundException() {
+        super("Hospede não encontrado!");
     }
 }

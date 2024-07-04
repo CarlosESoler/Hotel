@@ -1,13 +1,11 @@
 package hotel.data.dto.room;
 
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
 import hotel.data.entity.room.RoomType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
-import java.time.LocalDateTime;
 
 public record GetRoomAndGuestDTO(
         String roomNumber,
@@ -21,14 +19,4 @@ public record GetRoomAndGuestDTO(
         String guestName,
         String guestDocument
 ) {
-    public GetRoomAndGuestDTO(Room room, Guest Guest) {
-        this(
-                room.getNumber(),
-                room.getObservation(),
-                room.getStatus(),
-                room.getType(),
-                Guest.getFullName(),
-                Guest.getDocument()
-        );
-    }
 }

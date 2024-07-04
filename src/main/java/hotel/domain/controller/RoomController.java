@@ -1,9 +1,7 @@
 package hotel.domain.controller;
 
-import hotel.data.dto.guest.CheckInRequestDTO;
 import hotel.data.dto.room.CreateRoomDTO;
 import hotel.data.entity.room.Room;
-import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import hotel.domain.service.RoomService;
@@ -53,8 +51,8 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getAllRoomsWithSpecificStatus(status));
     }
 
-    @PostMapping("/checkin/{guestRg}")
+    /* @PostMapping("/checkin/{guestRg}")
     public ResponseEntity<Object> guestCheckIn(@RequestHeader String roomNumber, @PathVariable String guestRg, @RequestBody CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
          return ResponseEntity.ok(roomService.guestCheckIn(guestRg, roomNumber, guestDataCheckIn));
-    }
+    } */
 }

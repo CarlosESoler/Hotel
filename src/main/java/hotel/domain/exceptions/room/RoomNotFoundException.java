@@ -1,6 +1,5 @@
 package hotel.domain.exceptions.room;
 
-import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,12 +10,12 @@ public class RoomNotFoundException extends Exception {
     public static class Handler {
         @ResponseStatus(HttpStatus.NOT_FOUND)
         @ExceptionHandler(RoomNotFoundException.class)
-        public String handle(GuestNotFoundException e) {
+        public String handle(RoomNotFoundException e) {
             return e.getMessage();
         }
     }
 
-    public RoomNotFoundException(String e) {
-        super(e);
+    public RoomNotFoundException() {
+        super("Quarto não encontrado!");
     }
 }

@@ -1,7 +1,7 @@
 package hotel.data.entity.room;
 
 import hotel.data.dto.room.CreateRoomDTO;
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -38,3 +38,5 @@ public class Room {
     public Room() {
     }
 }
+
+

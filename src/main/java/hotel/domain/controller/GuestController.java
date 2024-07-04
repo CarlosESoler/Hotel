@@ -2,9 +2,9 @@ package hotel.domain.controller;
 
 
 import hotel.data.dto.guest.CreateGuestDTO;
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsException;
-import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
+import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.GuestService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @Transactional
-@RequestMapping("/hotel/guests")
+@RequestMapping("/hotel/guest")
 public class GuestController {
 
     private final GuestService guestService;
@@ -41,7 +41,7 @@ public class GuestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Guest>> getAllGuests() {
+    public ResponseEntity<List<Guest>> getAllGuests() throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.getAllGuests());
     }
 
