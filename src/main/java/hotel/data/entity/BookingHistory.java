@@ -4,6 +4,7 @@ import hotel.data.entity.guest.Car;
 import hotel.data.entity.guest.Guest;
 import hotel.data.entity.room.Room;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -25,6 +26,8 @@ public class BookingHistory {
     private Guest guest;
     @ManyToOne
     private Room room;
+
     @ManyToOne
+    @Null
     private Car car;
 }
