@@ -2,6 +2,7 @@ package hotel.domain.controller;
 
 import hotel.data.dto.room.CreateRoomDTO;
 import hotel.data.entity.room.Room;
+import hotel.domain.exceptions.room.RoomAlreadyExistsException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import hotel.domain.service.RoomService;
@@ -27,7 +28,7 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<Room> createRoom(@RequestBody CreateRoomDTO createDataRoom) {
+    public ResponseEntity<Room> createRoom(@RequestBody CreateRoomDTO createDataRoom) throws RoomAlreadyExistsException {
         return ResponseEntity.ok(roomService.createRoom(createDataRoom));
     }
 

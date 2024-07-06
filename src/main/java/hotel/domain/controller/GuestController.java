@@ -3,7 +3,7 @@ package hotel.domain.controller;
 
 import hotel.data.dto.guest.CreateGuestDTO;
 import hotel.data.entity.Guest;
-import hotel.domain.exceptions.guest.GuestAlreadyExistsException;
+import hotel.domain.exceptions.guest.GuestAlreadyExistsExceptionWithRg;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.GuestService;
 import jakarta.transaction.Transactional;
@@ -25,7 +25,7 @@ public class GuestController {
     }
 
     @PostMapping
-    public ResponseEntity<Guest> createGuest(@RequestBody CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsException {
+    public ResponseEntity<Guest> createGuest(@RequestBody CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsExceptionWithRg {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(guestService.createGuest(createGuestDTO));
     }
@@ -43,6 +43,11 @@ public class GuestController {
     @GetMapping
     public ResponseEntity<List<Guest>> getAllGuests() throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.getAllGuests());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteAllGuests() {
+        return ResponseEntity.ok(guestService.deleteAllGuests());
     }
 
     /* @PostMapping("/checkin")

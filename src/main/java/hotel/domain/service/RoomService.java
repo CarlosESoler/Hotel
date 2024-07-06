@@ -3,6 +3,7 @@ package hotel.domain.service;
 import hotel.data.dto.room.CreateRoomDTO;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
+import hotel.domain.exceptions.room.RoomAlreadyExistsException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import jakarta.transaction.Transactional;
@@ -31,15 +32,14 @@ public class RoomService {
      * @param createRoomDTO
      * @return Room
      */
-    public Room createRoom(CreateRoomDTO createRoomDTO) {
-        Optional.ofNullable(roomRepository.findByNumber(createRoomDTO.number()))
-                .ifPresent(existingRoom -> {
-                    throw new RuntimeException("O quarto já está registrado.");
-                });
+    public Room createRoom(CreateRoomDTO createRoomDTO) throws RoomAlreadyExistsException {
+        Room foundedRoom = roomRepository.findByNumber(createRoomDTO.number());
 
-        Room room = new Room(createRoomDTO);
+        if(foundedRoom != null) {
+            throw new RoomAlreadyExistsException();
+        }
 
-        return roomRepository.save(room);
+        return roomRepository.save(new Room(createRoomDTO));
     }
 
     /**
