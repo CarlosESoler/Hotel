@@ -18,6 +18,6 @@ public class GuestAlreadyExistsExceptionWithRg extends Exception {
     }
 
     public GuestAlreadyExistsExceptionWithRg(String rg) {
-        super("Hospede já cadastrado! RG do hóspede: " + rg);
+        super("Hospede já cadastrado! RG do hóspede: " + rg.substring(0, 3) + "." + rg.substring(3, 6) + "." + rg.substring(6, 8) + "-" + rg.substring(8));
     }
 }

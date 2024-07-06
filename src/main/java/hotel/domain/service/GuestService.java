@@ -1,7 +1,7 @@
 package hotel.domain.service;
 
 import hotel.data.dto.guest.CreateGuestDTO;
-import hotel.data.entity.Guest;
+import hotel.data.entity.guest.Guest;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsExceptionWithRg;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.repository.GuestRepository;
@@ -28,23 +28,26 @@ public class GuestService {
      * @return Guest
      */
     public Guest createGuest(CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsExceptionWithRg {
-        Optional<Guest> foundedGuest = guestRepository.findByRgOrDocument(createGuestDTO.rg(), createGuestDTO.document());
+        String formattedRg = createGuestDTO.rg().replaceAll("[^0-9]", "");
+        String formattedDocument = createGuestDTO.document().replaceAll("[^0-9]", "");
+
+        Optional<Guest> foundedGuest = guestRepository.findByRgOrDocument(formattedRg, formattedDocument);
 
         if (foundedGuest.isPresent()) {
-            throw new GuestAlreadyExistsExceptionWithRg(createGuestDTO.rg());
+            throw new GuestAlreadyExistsExceptionWithRg(formattedRg);
         }
 
-        if(createGuestDTO.rg().length() != 12) {
+        if(formattedRg.length() != 9) {
             throw new IllegalArgumentException("RG deve conter 12 dígitos");
         }
 
-        if(createGuestDTO.document().length() != 14) {
+        if(formattedDocument.length() != 11) {
             throw new IllegalArgumentException("CPF deve conter 14 dígitos");
         }
 
         Guest newGuest = new Guest(createGuestDTO);
-        newGuest.setDocument(createGuestDTO.document().replaceAll("[^0-9]", ""));
-        newGuest.setRg(createGuestDTO.rg().replaceAll("[^0-9]", ""));
+        newGuest.setDocument(formattedDocument);
+        newGuest.setRg(formattedRg);
         return guestRepository.save(newGuest);
     }
 

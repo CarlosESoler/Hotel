@@ -43,7 +43,7 @@ public class RoomController {
     }
 
     @GetMapping("/id/{roomId}")
-    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable UUID roomId) {
+    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable Long roomId) {
         return ResponseEntity.ok(roomRepository.findById(roomId));
     }
 

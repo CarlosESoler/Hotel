@@ -1,12 +1,9 @@
-package hotel.data.entity;
+package hotel.data.entity.guest;
 
 import hotel.data.dto.guest.CreateGuestDTO;
-import hotel.data.entity.room.Room;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CurrentTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +13,7 @@ import java.time.LocalDateTime;
 public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String rg;
     private String document;
     private LocalDate dateOfBirth;

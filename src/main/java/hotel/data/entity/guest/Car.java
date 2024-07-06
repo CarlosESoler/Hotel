@@ -1,4 +1,4 @@
-package hotel.data.entity;
+package hotel.data.entity.guest;
 
 import jakarta.persistence.*;
 import lombok.Data;
