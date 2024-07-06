@@ -6,6 +6,7 @@ import hotel.domain.exceptions.guest.GuestAlreadyExistsExceptionWithRg;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.repository.GuestRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,11 +28,12 @@ public class GuestService {
      * @param createGuestDTO
      * @return Guest
      */
-    public Guest createGuest(CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsExceptionWithRg {
+    public Guest createGuest(@NotNull CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsExceptionWithRg {
+
         String formattedRg = createGuestDTO.rg().replaceAll("[^0-9]", "");
         String formattedDocument = createGuestDTO.document().replaceAll("[^0-9]", "");
 
-        Optional<Guest> foundedGuest = guestRepository.findByRgOrDocument(formattedRg, formattedDocument);
+        Optional<Guest> foundedGuest = guestRepository.findByRg(formattedRg);
 
         if (foundedGuest.isPresent()) {
             throw new GuestAlreadyExistsExceptionWithRg(formattedRg);
