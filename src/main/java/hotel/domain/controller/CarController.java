@@ -1,6 +1,7 @@
 package hotel.domain.controller;
 
 import hotel.data.entity.guest.Car;
+import hotel.domain.service.CarService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Transactional
 @RequestMapping("/hotel/car")
 public class CarController {
+    CarService carService;
+
+    public CarController(CarService carService) {
+        this.carService = carService;
+    }
 
     @PostMapping
     public ResponseEntity<Car> createCar(@RequestBody Car car) {
-        return ResponseEntity.ok(new Car());
+
+        return ResponseEntity.ok(carService.createCar(car));
     }
 }
