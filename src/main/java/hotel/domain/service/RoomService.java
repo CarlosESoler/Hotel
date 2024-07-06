@@ -1,11 +1,9 @@
 package hotel.domain.service;
 
-import hotel.data.dto.guest.CheckInRequestDTO;
 import hotel.data.dto.room.CreateRoomDTO;
-import hotel.data.entity.guest.Guest;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
-import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
+import hotel.domain.exceptions.room.RoomAlreadyExistsException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import jakarta.transaction.Transactional;
@@ -34,15 +32,14 @@ public class RoomService {
      * @param createRoomDTO
      * @return Room
      */
-    public Room createRoom(CreateRoomDTO createRoomDTO) {
-        Optional.ofNullable(roomRepository.findByNumber(createRoomDTO.number()))
-                .ifPresent(existingRoom -> {
-                    throw new RuntimeException("O quarto já está registrado.");
-                });
+    public Room createRoom(CreateRoomDTO createRoomDTO) throws RoomAlreadyExistsException {
+        Room foundedRoom = roomRepository.findByNumber(createRoomDTO.number());
 
-        Room room = new Room(createRoomDTO);
+        if(foundedRoom != null) {
+            throw new RoomAlreadyExistsException();
+        }
 
-        return roomRepository.save(room);
+        return roomRepository.save(new Room(createRoomDTO));
     }
 
     /**
@@ -55,7 +52,7 @@ public class RoomService {
     public Room getRoomByNumber(String roomNumber) throws RoomNotFoundException {
         Room room = roomRepository.findByNumber(roomNumber);
         if (room == null) {
-            throw new RoomNotFoundException("Quarto não encontrado");
+            throw new RoomNotFoundException();
         }
         return room;
     }
@@ -65,7 +62,7 @@ public class RoomService {
         return roomRepository.findAllByStatus(roomStatus);
     }
 
-    public Object guestCheckIn(String guesRg, String roomNumber, CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
+   /* public Object guestCheckIn(String guesRg, String roomNumber, CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
         Room room = getRoomByNumber(roomNumber);
         Guest guest = guestService.getGuestByRg(guesRg);
         if(room.getStatus().equals(RoomStatus.OCCUPIED)) {
@@ -80,12 +77,10 @@ public class RoomService {
         room.setGuest(guestService.getGuestByRg(guesRg));
 
         guest.setRoom(room);
-        guest.setCheckIn(guestDataCheckIn.checkIn());
-        guest.setCheckOut(guestDataCheckIn.checkOut());
         roomRepository.save(room);
 
         return guestService.saveGuest(guest);
 
 
-    }
+    } */
 }

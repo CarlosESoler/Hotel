@@ -4,13 +4,14 @@ import hotel.data.entity.guest.Guest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface GuestRepository extends JpaRepository<Guest, UUID> {
+public interface GuestRepository extends JpaRepository<Guest, Long> {
 
-    Guest findByRg(String rg);
-    Guest findByRgOrDocument(String rg, String document);
+    Optional<Guest> findByRg(String rg);
+    Optional<Guest> findByRgOrDocument(String rg, String document);
     Guest findByDocument(String document);
 
 }

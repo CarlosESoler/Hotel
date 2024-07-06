@@ -1,11 +1,9 @@
 package hotel.data.entity.guest;
 
-import hotel.data.dto.guest.CheckInRequestDTO;
 import hotel.data.dto.guest.CreateGuestDTO;
-import hotel.data.entity.room.Room;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CurrentTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,37 +13,31 @@ import java.time.LocalDateTime;
 public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private Long id;
     private String rg;
     private String document;
-    private LocalDate birthDate;
-
-    private String fullName;
-    private String phone;
+    private LocalDate dateOfBirth;
+    private String name;
+    private String lastName;
     private String motherName;
     private String email;
-    // TODO - Make a list of companions
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    private Room room;
+    @CurrentTimestamp
+    private LocalDateTime createdAt;
+
+    // TODO - Make a list of companions
 
     public Guest(CreateGuestDTO createGuestDTO) {
         this.rg = createGuestDTO.rg();
         this.document = createGuestDTO.document();
-        this.birthDate = createGuestDTO.birthDate();
-        this.fullName = createGuestDTO.fullName();
-        this.phone = createGuestDTO.phone();
+        this.dateOfBirth = createGuestDTO.dateOfBirth();
+        this.name = createGuestDTO.name();
+        this.lastName = createGuestDTO.lastName();
         this.motherName = createGuestDTO.motherName();
         this.email = createGuestDTO.email();
     }
 
     public Guest() {
-    }
 
-    public Guest(CheckInRequestDTO checkInRequestDTO) {
-        this.setCheckIn(checkInRequestDTO.checkIn());
-        this.setCheckOut(checkInRequestDTO.checkOut());
     }
 }

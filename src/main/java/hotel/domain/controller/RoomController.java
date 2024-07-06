@@ -1,9 +1,8 @@
 package hotel.domain.controller;
 
-import hotel.data.dto.guest.CheckInRequestDTO;
 import hotel.data.dto.room.CreateRoomDTO;
 import hotel.data.entity.room.Room;
-import br.com.hotel.domain.exceptions.guest.GuestNotFoundException;
+import hotel.domain.exceptions.room.RoomAlreadyExistsException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import hotel.domain.service.RoomService;
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @Transactional
-@RequestMapping("/hotel/rooms")
+@RequestMapping("/hotel/room")
 public class RoomController {
 
     RoomService roomService;
@@ -29,7 +28,7 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<Room> createRoom(@RequestBody CreateRoomDTO createDataRoom) {
+    public ResponseEntity<Room> createRoom(@RequestBody CreateRoomDTO createDataRoom) throws RoomAlreadyExistsException {
         return ResponseEntity.ok(roomService.createRoom(createDataRoom));
     }
 
@@ -44,7 +43,7 @@ public class RoomController {
     }
 
     @GetMapping("/id/{roomId}")
-    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable UUID roomId) {
+    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable Long roomId) {
         return ResponseEntity.ok(roomRepository.findById(roomId));
     }
 
@@ -53,8 +52,8 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getAllRoomsWithSpecificStatus(status));
     }
 
-    @PostMapping("/checkin/{guestRg}")
+    /* @PostMapping("/checkin/{guestRg}")
     public ResponseEntity<Object> guestCheckIn(@RequestHeader String roomNumber, @PathVariable String guestRg, @RequestBody CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
          return ResponseEntity.ok(roomService.guestCheckIn(guestRg, roomNumber, guestDataCheckIn));
-    }
+    } */
 }
