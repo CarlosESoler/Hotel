@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface GuestRepository extends JpaRepository<Guest, Long> {
+public interface GuestRepository extends JpaRepository<Guest, Integer> {
 
     Optional<Guest> findByRg(String rg);
     Optional<Guest> findByRgOrDocument(String rg, String document);

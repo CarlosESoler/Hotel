@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static jakarta.transaction.Transactional.TxType.MANDATORY;
 
@@ -19,11 +18,9 @@ import static jakarta.transaction.Transactional.TxType.MANDATORY;
 public class RoomService {
 
     RoomRepository roomRepository;
-    GuestService guestService;
 
     public RoomService(RoomRepository roomRepository, GuestService guestService) {
         this.roomRepository = roomRepository;
-        this.guestService = guestService;
     }
 
     /**
@@ -51,9 +48,11 @@ public class RoomService {
      */
     public Room getRoomByNumber(String roomNumber) throws RoomNotFoundException {
         Room room = roomRepository.findByNumber(roomNumber);
+
         if (room == null) {
             throw new RoomNotFoundException();
         }
+
         return room;
     }
 
@@ -62,25 +61,8 @@ public class RoomService {
         return roomRepository.findAllByStatus(roomStatus);
     }
 
-   /* public Object guestCheckIn(String guesRg, String roomNumber, CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
-        Room room = getRoomByNumber(roomNumber);
-        Guest guest = guestService.getGuestByRg(guesRg);
-        if(room.getStatus().equals(RoomStatus.OCCUPIED)) {
-            throw new RuntimeException("Quarto já está ocupado");
-        }
-
-        if(guest.getRoom() != null) {
-            throw new RuntimeException("Hospede já está em um quarto");
-        }
-
-        room.setStatus(RoomStatus.OCCUPIED);
-        room.setGuest(guestService.getGuestByRg(guesRg));
-
-        guest.setRoom(room);
-        roomRepository.save(room);
-
-        return guestService.saveGuest(guest);
-
-
-    } */
+    public void updateRoomStatus(Room room, RoomStatus roomStatus) {
+        room.setStatus(roomStatus);
+        roomRepository.saveAndFlush(room);
+    }
 }

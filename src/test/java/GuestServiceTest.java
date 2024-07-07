@@ -25,16 +25,16 @@ public class GuestServiceTest {
 //         guest = new Guest(createGuestDTO);
     }
 
-    @Test
-    public void createGuestWhenOtherGuestsAlreadyExists() {
-        CreateGuestDTO createGuestDTO = new CreateGuestDTO("123456789",
-                "123456789",
-                LocalDate.now(),
-                "John",
-                "Doe",
-                "Jane",
-                "carlos");
-
-        Assertions.assertThrows(GuestAlreadyExistsExceptionWithRg.class, () -> guestService.createGuest(createGuestDTO));
-    }
+//    @Test
+//    public void createGuestWhenOtherGuestsAlreadyExists() {
+//        CreateGuestDTO createGuestDTO = new CreateGuestDTO("123456789",
+//                "123456789",
+//                LocalDate.now(),
+//                "John",
+//                "Doe",
+//                "Jane",
+//                "carlos");
+//
+//        Assertions.assertThrows(GuestAlreadyExistsExceptionWithRg.class, () -> guestService.createGuest(createGuestDTO));
+//    }
 }

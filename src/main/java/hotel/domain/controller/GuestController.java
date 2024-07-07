@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @Transactional
-@RequestMapping("/hotel/guest")
+@RequestMapping("/guest")
 public class GuestController {
 
     private final GuestService guestService;

@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @Transactional
-@RequestMapping("/hotel/room")
+@RequestMapping("/room")
 public class RoomController {
 
     RoomService roomService;
@@ -37,13 +36,18 @@ public class RoomController {
         return ResponseEntity.ok(roomRepository.findAll());
     }
 
+    @GetMapping
+    public ResponseEntity<List<Room>> getAllRooms() {
+        return ResponseEntity.ok(roomRepository.findAll());
+    }
+
     @GetMapping("/{roomNumber}")
     public ResponseEntity<Room> getRoomByNumber(@PathVariable String roomNumber) throws RoomNotFoundException {
         return ResponseEntity.ok(roomService.getRoomByNumber(roomNumber));
     }
 
     @GetMapping("/id/{roomId}")
-    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable Long roomId) {
+    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable int roomId) {
         return ResponseEntity.ok(roomRepository.findById(roomId));
     }
 
@@ -52,8 +56,4 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getAllRoomsWithSpecificStatus(status));
     }
 
-    /* @PostMapping("/checkin/{guestRg}")
-    public ResponseEntity<Object> guestCheckIn(@RequestHeader String roomNumber, @PathVariable String guestRg, @RequestBody CheckInRequestDTO guestDataCheckIn) throws RoomNotFoundException, GuestNotFoundException {
-         return ResponseEntity.ok(roomService.guestCheckIn(guestRg, roomNumber, guestDataCheckIn));
-    } */
 }
