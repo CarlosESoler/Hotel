@@ -15,4 +15,8 @@ public class CarService {
     public Car createCar(Car car) {
         return carRepository.save(car);
     }
+
+    public Car getCarById(Integer integer) {
+        return carRepository.findById(integer).orElseThrow(RuntimeException::new);
+    }
 }

@@ -9,10 +9,8 @@ public record CreateHostingDTO(
         String roomNumber,
         String guestRg,
         @Null
-        Car guestCar,
-        @Null
-        Address guestAddress,
-        @Null
-        Phone guestPhone
+        Integer guestCarId,
+        Integer guestAddressId,
+        Integer guestPhoneId
 ) {
 }

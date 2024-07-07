@@ -1,6 +1,7 @@
 package hotel.data.entity.hosting;
 
 import hotel.data.dto.hosting.CreateHostingDTO;
+import hotel.data.entity.guest.Address;
 import hotel.data.entity.guest.Car;
 import hotel.data.entity.guest.Guest;
 import hotel.data.entity.guest.Phone;
@@ -32,10 +33,22 @@ public class Hosting {
     private Room room;
 
     @ManyToOne
+    private Address address;
+
+    @ManyToOne
     @Null
     private Car car;
 
     @ManyToOne
-    @Null
     private Phone phone;
+
+    public Hosting() {
+    }
+
+    public Hosting(Guest guest, Room room, Phone phone, Address address) {
+        this.guest = guest;
+        this.room = room;
+        this.phone = phone;
+        this.address = address;
+    }
 }
