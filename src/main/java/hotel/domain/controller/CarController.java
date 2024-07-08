@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional
-@RequestMapping("/hotel/car")
+@RequestMapping("/car")
 public class CarController {
     CarService carService;
 
@@ -21,7 +21,6 @@ public class CarController {
 
     @PostMapping
     public ResponseEntity<Car> createCar(@RequestBody Car car) {
-
         return ResponseEntity.ok(carService.createCar(car));
     }
 }

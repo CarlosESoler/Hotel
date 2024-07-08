@@ -24,10 +24,6 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomType type;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    private Guest guest;
-
     public Room(CreateRoomDTO createRoomDTO) {
         this.number = createRoomDTO.number();
         this.observation = createRoomDTO.observation();

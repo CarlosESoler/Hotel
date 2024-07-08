@@ -1,5 +1,8 @@
 package hotel.data.dto.room;
 
+import hotel.data.entity.guest.Address;
+import hotel.data.entity.guest.Car;
+import hotel.data.entity.guest.Phone;
 import hotel.data.entity.room.RoomStatus;
 import hotel.data.entity.room.RoomType;
 import jakarta.persistence.EnumType;
@@ -15,6 +18,9 @@ public record GetRoomAndGuestDTO(
 
         // Guest information's
         String guestName,
-        String guestDocument
+        String guestDocument,
+        Car guestCar,
+        Address guestAddress,
+        Phone guestPhone
 ) {
 }

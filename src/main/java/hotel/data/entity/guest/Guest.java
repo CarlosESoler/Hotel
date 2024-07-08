@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String rg;
     private String document;
     private LocalDate dateOfBirth;
