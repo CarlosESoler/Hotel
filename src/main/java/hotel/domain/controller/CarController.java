@@ -21,7 +21,6 @@ public class CarController {
 
     @PostMapping
     public ResponseEntity<Car> createCar(@RequestBody Car car) {
-
         return ResponseEntity.ok(carService.createCar(car));
     }
 }

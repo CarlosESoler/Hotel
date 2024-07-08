@@ -49,10 +49,4 @@ public class GuestController {
     public ResponseEntity<String> deleteAllGuests() {
         return ResponseEntity.ok(guestService.deleteAllGuests());
     }
-
-    /* @PostMapping("/checkin")
-    public ResponseEntity<Guest> checkIn(@RequestBody Guest guest) {
-        return ResponseEntity.ok(guestService.checkIn(guest));
-    } */
-
 }

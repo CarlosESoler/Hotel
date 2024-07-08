@@ -1,11 +1,11 @@
 package hotel.data.entity.hosting;
 
-import hotel.data.dto.hosting.CreateHostingDTO;
 import hotel.data.entity.guest.Address;
 import hotel.data.entity.guest.Car;
 import hotel.data.entity.guest.Guest;
 import hotel.data.entity.guest.Phone;
 import hotel.data.entity.room.Room;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 public class Hosting {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -45,10 +44,11 @@ public class Hosting {
     public Hosting() {
     }
 
-    public Hosting(Guest guest, Room room, Phone phone, Address address) {
-        this.guest = guest;
+    public Hosting(Room room, Address address, @Nullable Car car, Phone phone, Guest guest) {
         this.room = room;
-        this.phone = phone;
         this.address = address;
+        this.car = car;
+        this.phone = phone;
+        this.guest = guest;
     }
 }

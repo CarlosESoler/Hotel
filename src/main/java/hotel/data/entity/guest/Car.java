@@ -1,5 +1,6 @@
 package hotel.data.entity.guest;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,4 +18,8 @@ public class Car {
     private String model;
     @Column(length = 10)
     private String color;
+
+    @ManyToOne
+    @Nullable
+    private Guest guest;
 }

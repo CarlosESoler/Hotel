@@ -31,11 +31,6 @@ public class RoomController {
         return ResponseEntity.ok(roomService.createRoom(createDataRoom));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Room>> getRooms() {
-        return ResponseEntity.ok(roomRepository.findAll());
-    }
-
     @GetMapping
     public ResponseEntity<List<Room>> getAllRooms() {
         return ResponseEntity.ok(roomRepository.findAll());
