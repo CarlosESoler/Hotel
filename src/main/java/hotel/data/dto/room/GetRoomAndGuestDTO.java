@@ -1,8 +1,8 @@
 package hotel.data.dto.room;
 
-import hotel.data.entity.guest.Address;
-import hotel.data.entity.guest.Car;
-import hotel.data.entity.guest.Phone;
+import hotel.data.entity.Address;
+import hotel.data.entity.Car;
+import hotel.data.entity.Phone;
 import hotel.data.entity.room.RoomStatus;
 import hotel.data.entity.room.RoomType;
 import jakarta.persistence.EnumType;

@@ -2,8 +2,9 @@ package hotel.domain.controller;
 
 import hotel.data.dto.hosting.CreateHostingDTO;
 import hotel.data.entity.hosting.Hosting;
-import hotel.domain.exceptions.guest.GuestNotFoundException;
-import hotel.domain.exceptions.room.RoomNotFoundException;
+import hotel.exceptions.guest.GuestAddressNotFoundException;
+import hotel.exceptions.guest.GuestNotFoundException;
+import hotel.exceptions.room.RoomNotFoundException;
 import hotel.domain.service.HostingService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class HostingController {
     }
 
     @PostMapping
-    public ResponseEntity<Hosting> createHosting(@RequestBody CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
+    public ResponseEntity<Hosting> createHosting(@RequestBody CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException, GuestAddressNotFoundException {
         return ResponseEntity.ok(hostingService.createHosting(createHostingDTO));
     }
 }

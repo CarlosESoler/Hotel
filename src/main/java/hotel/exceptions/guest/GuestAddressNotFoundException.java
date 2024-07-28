@@ -1,23 +1,24 @@
-package hotel.domain.exceptions.guest;
+package hotel.exceptions.guest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-public class GuestNotFoundException extends Exception {
+public class GuestAddressNotFoundException extends Exception {
+
 
     @RestControllerAdvice
     public static class Handler {
 
         @ResponseStatus(HttpStatus.NOT_FOUND)
-        @ExceptionHandler(GuestNotFoundException.class)
-        public String handle(GuestNotFoundException e) {
+        @ExceptionHandler(GuestAddressNotFoundException.class)
+        public String handleGuestAddressNotFoundException(GuestAddressNotFoundException e) {
             return e.getMessage();
         }
     }
 
-    public GuestNotFoundException() {
-        super("Hospede não encontrado!");
+    public GuestAddressNotFoundException() {
+        super("Hospede não possui endereço cadastrado!");
     }
 }

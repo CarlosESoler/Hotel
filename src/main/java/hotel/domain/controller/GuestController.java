@@ -2,9 +2,11 @@ package hotel.domain.controller;
 
 
 import hotel.data.dto.guest.CreateGuestDTO;
+import hotel.data.entity.guest.AbsoluteGuest;
 import hotel.data.entity.guest.Guest;
-import hotel.domain.exceptions.guest.GuestAlreadyExistsExceptionWithRg;
-import hotel.domain.exceptions.guest.GuestNotFoundException;
+import hotel.exceptions.guest.GuestAddressNotFoundException;
+import hotel.exceptions.guest.GuestAlreadyExistsWithRgException;
+import hotel.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.GuestService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ public class GuestController {
     }
 
     @PostMapping
-    public ResponseEntity<Guest> createGuest(@RequestBody CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsExceptionWithRg {
+    public ResponseEntity<Guest> createGuest(@RequestBody CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsWithRgException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(guestService.createGuest(createGuestDTO));
     }
@@ -47,6 +49,14 @@ public class GuestController {
 
     @DeleteMapping
     public ResponseEntity<String> deleteAllGuests() {
-        return ResponseEntity.ok(guestService.deleteAllGuests());
+        if(!guestService.deleteAllGuests()) {
+            return ResponseEntity.internalServerError().body("Erro ao deletar todos os hóspedes");
+        }
+        return ResponseEntity.ok("Todos os hóspedes foram deletados");
     }
+
+//    @GetMapping("/absolute/{rg}")
+//    public ResponseEntity<AbsoluteGuest> getAbsoluteGuest(@PathVariable String rg) throws GuestNotFoundException, GuestAddressNotFoundException {
+//        return ResponseEntity.ok(guestService.getAbsoluteGuestByRg(rg));
+//    }
 }

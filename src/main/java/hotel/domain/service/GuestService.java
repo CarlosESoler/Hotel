@@ -1,9 +1,14 @@
 package hotel.domain.service;
 
 import hotel.data.dto.guest.CreateGuestDTO;
+import hotel.data.entity.Address;
+import hotel.data.entity.Car;
+import hotel.data.entity.Phone;
+import hotel.data.entity.guest.AbsoluteGuest;
 import hotel.data.entity.guest.Guest;
-import hotel.domain.exceptions.guest.GuestAlreadyExistsExceptionWithRg;
-import hotel.domain.exceptions.guest.GuestNotFoundException;
+import hotel.exceptions.guest.GuestAddressNotFoundException;
+import hotel.exceptions.guest.GuestAlreadyExistsWithRgException;
+import hotel.exceptions.guest.GuestNotFoundException;
 import hotel.domain.repository.GuestRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
@@ -17,10 +22,16 @@ import static jakarta.transaction.Transactional.TxType.MANDATORY;
 @Service
 @Transactional(MANDATORY)
 public class GuestService {
-    GuestRepository guestRepository;
+    private final GuestRepository guestRepository;
+    private final PhoneService phoneService;
+    private final AddressService addressService;
+    private final CarService carService;
 
-    public GuestService(GuestRepository guestRepository) {
+    public GuestService(GuestRepository guestRepository, PhoneService phoneService, AddressService addressService, CarService carService) {
         this.guestRepository = guestRepository;
+        this.phoneService = phoneService;
+        this.addressService = addressService;
+        this.carService = carService;
     }
 
     /**
@@ -28,15 +39,15 @@ public class GuestService {
      * @param createGuestDTO
      * @return Guest
      */
-    public Guest createGuest(@NotNull CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsExceptionWithRg {
+    public Guest createGuest(@NotNull CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsWithRgException {
 
-        String formattedRg = createGuestDTO.rg().replaceAll("[^0-9]", "");
-        String formattedDocument = createGuestDTO.document().replaceAll("[^0-9]", "");
+        String formattedRg = formatRg(createGuestDTO.rg());
+        String formattedDocument = formatDocument(createGuestDTO.document());
 
         Optional<Guest> foundedGuest = guestRepository.findByRg(formattedRg);
 
         if (foundedGuest.isPresent()) {
-            throw new GuestAlreadyExistsExceptionWithRg(formattedRg);
+            throw new GuestAlreadyExistsWithRgException(formattedRg);
         }
 
         if(formattedRg.length() != 9) {
@@ -96,8 +107,30 @@ public class GuestService {
         return guestRepository.saveAndFlush(guest);
     }
 
-    public String deleteAllGuests() {
+    public boolean deleteAllGuests() {
         guestRepository.deleteAll();
-        return "Hospedes deletados com sucesso";
+        return true;
+    }
+
+//    public AbsoluteGuest getAbsoluteGuestByRg(String rg) throws GuestNotFoundException, GuestAddressNotFoundException {
+//        Guest guest = getGuestByRg(rg);
+//        Phone phone = phoneService.getPhoneByGuest(rg);
+//        Address address = addressService.getAddressByGuest(guest);
+//        Car car = carService.getCarByGuest(guest);
+//
+//        if(car == null) {
+//            return new AbsoluteGuest(guest, phone, address, null);
+//        }
+//
+//        return new AbsoluteGuest(guest, phone, address, car);
+//    }
+
+
+    private String formatRg(String rg) {
+        return rg.replaceAll("[^0-9]", "");
+    }
+
+    private String formatDocument(String document) {
+        return document.replaceAll("[^0-9]", "");
     }
 }

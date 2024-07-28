@@ -1,4 +1,4 @@
-package hotel.data.dto.guest;
+package hotel.data.dto.phone;
 
 import jakarta.annotation.Nullable;
 

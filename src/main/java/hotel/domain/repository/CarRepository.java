@@ -1,6 +1,6 @@
 package hotel.domain.repository;
 
-import hotel.data.entity.guest.Car;
+import hotel.data.entity.Car;
 import hotel.data.entity.guest.Guest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

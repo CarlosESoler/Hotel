@@ -1,6 +1,6 @@
 package hotel.domain.controller;
 
-import hotel.data.entity.guest.Car;
+import hotel.data.entity.Car;
 import hotel.domain.service.CarService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;

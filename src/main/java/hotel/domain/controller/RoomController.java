@@ -2,8 +2,8 @@ package hotel.domain.controller;
 
 import hotel.data.dto.room.CreateRoomDTO;
 import hotel.data.entity.room.Room;
-import hotel.domain.exceptions.room.RoomAlreadyExistsException;
-import hotel.domain.exceptions.room.RoomNotFoundException;
+import hotel.exceptions.room.RoomAlreadyExistsException;
+import hotel.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import hotel.domain.service.RoomService;
 import jakarta.transaction.Transactional;
