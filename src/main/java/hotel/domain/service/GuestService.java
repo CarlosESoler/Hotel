@@ -2,7 +2,7 @@ package hotel.domain.service;
 
 import hotel.data.dto.guest.CreateGuestDTO;
 import hotel.data.entity.guest.Guest;
-import hotel.domain.exceptions.guest.GuestAlreadyExistsExceptionWithRg;
+import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.repository.GuestRepository;
 import jakarta.transaction.Transactional;
@@ -17,10 +17,16 @@ import static jakarta.transaction.Transactional.TxType.MANDATORY;
 @Service
 @Transactional(MANDATORY)
 public class GuestService {
-    GuestRepository guestRepository;
+    private final GuestRepository guestRepository;
+    private final PhoneService phoneService;
+    private final AddressService addressService;
+    private final CarService carService;
 
-    public GuestService(GuestRepository guestRepository) {
+    public GuestService(GuestRepository guestRepository, PhoneService phoneService, AddressService addressService, CarService carService) {
         this.guestRepository = guestRepository;
+        this.phoneService = phoneService;
+        this.addressService = addressService;
+        this.carService = carService;
     }
 
     /**
@@ -28,15 +34,15 @@ public class GuestService {
      * @param createGuestDTO
      * @return Guest
      */
-    public Guest createGuest(@NotNull CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsExceptionWithRg {
+    public Guest createGuest(@NotNull CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsWithRgException {
 
-        String formattedRg = createGuestDTO.rg().replaceAll("[^0-9]", "");
-        String formattedDocument = createGuestDTO.document().replaceAll("[^0-9]", "");
+        String formattedRg = formatRg(createGuestDTO.rg());
+        String formattedDocument = formatDocument(createGuestDTO.document());
 
         Optional<Guest> foundedGuest = guestRepository.findByRg(formattedRg);
 
         if (foundedGuest.isPresent()) {
-            throw new GuestAlreadyExistsExceptionWithRg(formattedRg);
+            throw new GuestAlreadyExistsWithRgException(formattedRg);
         }
 
         if(formattedRg.length() != 9) {
@@ -99,5 +105,14 @@ public class GuestService {
     public String deleteAllGuests() {
         guestRepository.deleteAll();
         return "Hospedes deletados com sucesso";
+    }
+
+
+    private String formatRg(String rg) {
+        return rg.replaceAll("[^0-9]", "");
+    }
+
+    private String formatDocument(String document) {
+        return document.replaceAll("[^0-9]", "");
     }
 }

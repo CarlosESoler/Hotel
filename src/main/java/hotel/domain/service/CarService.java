@@ -1,6 +1,6 @@
 package hotel.domain.service;
 
-import hotel.data.entity.guest.Car;
+import hotel.data.entity.Car;
 import hotel.data.entity.guest.Guest;
 import hotel.domain.repository.CarRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +22,7 @@ public class CarService {
     }
 
     public Car getCarById(Integer integer) {
-        return carRepository.findById(integer).orElseThrow(RuntimeException::new);
+        return carRepository.findById(integer).orElse(null);
     }
 
     public Car getCarByGuest(Guest guest) {

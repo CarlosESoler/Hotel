@@ -1,7 +1,7 @@
-package hotel.data.entity.guest;
+package hotel.data.entity;
 
 import hotel.data.dto.guest.CreatePhoneDTO;
-import jakarta.annotation.Nullable;
+import hotel.data.entity.guest.Guest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class Phone {
     @Null
     private String phoneNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Guest guest;
 
     public Phone(CreatePhoneDTO createPhoneDTO, Guest guest) {
@@ -31,5 +31,8 @@ public class Phone {
         this.cellPhone = createPhoneDTO.cellPhone();
         this.phoneNumber = createPhoneDTO.phoneNumber();
         this.guest = guest;
+    }
+
+    public Phone() {
     }
 }

@@ -1,5 +1,6 @@
-package hotel.data.entity.guest;
+package hotel.data.entity;
 
+import hotel.data.entity.guest.Guest;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class Car {
     @Column(length = 10)
     private String color;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Nullable
     private Guest guest;
 }

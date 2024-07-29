@@ -1,44 +1,44 @@
 package hotel.data.entity.hosting;
 
-import hotel.data.entity.guest.Address;
-import hotel.data.entity.guest.Car;
+import hotel.data.entity.Address;
+import hotel.data.entity.Car;
 import hotel.data.entity.guest.Guest;
-import hotel.data.entity.guest.Phone;
+import hotel.data.entity.Phone;
 import hotel.data.entity.room.Room;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Data
 public class Hosting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @CreatedDate
+
+    @CurrentTimestamp
     private LocalDateTime checkIn;
     @LastModifiedDate
     private LocalDateTime checkOut;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Guest guest;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Room room;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Null
     private Car car;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Phone phone;
 
     public Hosting() {
