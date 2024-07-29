@@ -1,7 +1,9 @@
 package hotel.domain.service;
 
 import hotel.data.dto.guest.CreateGuestDTO;
+import hotel.data.entity.guest.AbsoluteGuest;
 import hotel.data.entity.guest.Guest;
+import hotel.domain.exceptions.GuestAddressNotFoundException;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.repository.GuestRepository;
@@ -105,6 +107,11 @@ public class GuestService {
     public String deleteAllGuests() {
         guestRepository.deleteAll();
         return "Hospedes deletados com sucesso";
+    }
+
+    public AbsoluteGuest getAbsoluteGuestByRg(String rg) throws GuestNotFoundException, GuestAddressNotFoundException {
+        Guest guest = getGuestByRg(rg);
+        return new AbsoluteGuest(guest, phoneService.getPartialPhoneByGuestRg(guest.getRg()), addressService.getAddressByGuest(guest), carService.getCarByGuest(guest));
     }
 
 

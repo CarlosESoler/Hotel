@@ -2,11 +2,14 @@ package hotel.domain.controller;
 
 
 import hotel.data.dto.guest.CreateGuestDTO;
+import hotel.data.entity.guest.AbsoluteGuest;
 import hotel.data.entity.guest.Guest;
+import hotel.domain.exceptions.GuestAddressNotFoundException;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.GuestService;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +51,10 @@ public class GuestController {
     @DeleteMapping
     public ResponseEntity<String> deleteAllGuests() {
         return ResponseEntity.ok(guestService.deleteAllGuests());
+    }
+
+    @GetMapping("/absolute/{rg}")
+    public ResponseEntity<AbsoluteGuest> getAbsoluteGuestByRg(@PathVariable String rg) throws GuestNotFoundException, GuestAddressNotFoundException {
+        return ResponseEntity.ok(guestService.getAbsoluteGuestByRg(rg));
     }
 }
