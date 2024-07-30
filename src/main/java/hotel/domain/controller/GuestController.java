@@ -1,10 +1,9 @@
 package hotel.domain.controller;
 
 
-import hotel.data.dto.guest.CreateGuestDTO;
-import hotel.data.entity.guest.AbsoluteGuest;
+import hotel.data.dto.CreateGuestDTO;
+import hotel.data.entity.Address;
 import hotel.data.entity.guest.Guest;
-import hotel.domain.exceptions.GuestAddressNotFoundException;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.GuestService;
@@ -33,14 +32,14 @@ public class GuestController {
                 .body(guestService.createGuest(createGuestDTO));
     }
 
+    @PatchMapping("/{rg}")
+    public ResponseEntity<Guest> addGuestAddress(@PathVariable String rg, @RequestBody Address address) throws GuestNotFoundException {
+        return ResponseEntity.ok(guestService.addAddressToGuest(rg, address));
+    }
+
     @GetMapping("/{rg}")
     public ResponseEntity<Guest> getGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.getGuestByRg(rg));
-    }
-
-    @DeleteMapping("/{rg}")
-    public ResponseEntity<String> deleteGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
-        return ResponseEntity.ok(guestService.deleteGuestByRg(rg));
     }
 
     @GetMapping
@@ -53,8 +52,8 @@ public class GuestController {
         return ResponseEntity.ok(guestService.deleteAllGuests());
     }
 
-    @GetMapping("/absolute/{rg}")
-    public ResponseEntity<AbsoluteGuest> getAbsoluteGuestByRg(@PathVariable String rg) throws GuestNotFoundException, GuestAddressNotFoundException {
-        return ResponseEntity.ok(guestService.getAbsoluteGuestByRg(rg));
+    @DeleteMapping("/{rg}")
+    public ResponseEntity<String> deleteGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
+        return ResponseEntity.ok(guestService.deleteGuestByRg(rg));
     }
 }

@@ -32,23 +32,15 @@ public class Hosting {
     private Room room;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Address address;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @Null
     private Car car;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Phone phone;
 
     public Hosting() {
     }
 
-    public Hosting(Room room, Address address, @Nullable Car car, Phone phone, Guest guest) {
+    public Hosting(Room room, @Nullable Car car, Guest guest) {
         this.room = room;
-        this.address = address;
         this.car = car;
-        this.phone = phone;
         this.guest = guest;
     }
 }

@@ -1,6 +1,6 @@
 package hotel.data.entity;
 
-import hotel.data.dto.guest.CreatePhoneDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hotel.data.entity.guest.Guest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
@@ -24,12 +24,13 @@ public class Phone {
     private String phoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Guest guest;
 
-    public Phone(CreatePhoneDTO createPhoneDTO, Guest guest) {
-        this.ddd = createPhoneDTO.ddd();
-        this.cellPhone = createPhoneDTO.cellPhone();
-        this.phoneNumber = createPhoneDTO.phoneNumber();
+    public Phone(Phone phone, Guest guest) {
+        this.ddd = phone.getDdd();
+        this.cellPhone = phone.getCellPhone();
+        this.phoneNumber = phone.getPhoneNumber();
         this.guest = guest;
     }
 

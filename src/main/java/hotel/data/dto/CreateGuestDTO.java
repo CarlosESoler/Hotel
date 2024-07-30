@@ -1,4 +1,7 @@
-package hotel.data.dto.guest;
+package hotel.data.dto;
+
+import hotel.data.entity.Address;
+import hotel.data.entity.Phone;
 
 import java.time.LocalDate;
 
@@ -9,6 +12,8 @@ public record CreateGuestDTO(
         String name,
         String lastName,
         String motherName,
-        String email
+        String email,
+        Phone phone,
+        Address address
 ) {
 }

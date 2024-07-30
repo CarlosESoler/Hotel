@@ -8,9 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Integer> {
-
     Optional<Guest> findByRg(String rg);
-    Optional<Guest> findByRgOrDocument(String rg, String document);
-    Guest findByDocument(String document);
-
 }

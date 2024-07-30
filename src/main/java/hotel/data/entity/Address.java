@@ -1,6 +1,6 @@
 package hotel.data.entity;
 
-import hotel.data.dto.address.CreateAddressDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hotel.data.entity.guest.Guest;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,14 +21,15 @@ public class Address {
     private String city;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Guest guest;
 
-    public Address(CreateAddressDTO createAddressDTO, Guest guest) {
-        this.city = createAddressDTO.city();
-        this.state = createAddressDTO.state();
-        this.houseNumber = createAddressDTO.houseNumber();
-        this.reference = createAddressDTO.reference();
-        this.zipCode = createAddressDTO.zipCode();
+    public Address(Address address, Guest guest) {
+        this.city = address.getCity();
+        this.state = address.getState();
+        this.houseNumber = address.getHouseNumber();
+        this.reference = address.getReference();
+        this.zipCode = address.getZipCode();
         this.guest = guest;
     }
 

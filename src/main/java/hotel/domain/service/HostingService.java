@@ -15,7 +15,10 @@ import hotel.domain.repository.HostingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import static jakarta.transaction.Transactional.TxType.MANDATORY;
+
 @Service
+@Transactional(MANDATORY)
 public class HostingService {
 
     private final HostingRepository hostingRepository;
@@ -34,16 +37,18 @@ public class HostingService {
         this.phoneService = phoneService;
     }
 
-    @Transactional(rollbackOn = Exception.class)
-    public Hosting createHosting(CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException, GuestAddressNotFoundException {
+    public Hosting createHosting(CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
         Room room = roomService.getRoomByNumber(createHostingDTO.roomNumber());
+
+        if(room.getStatus() != RoomStatus.AVAILABLE) {
+            throw new IllegalArgumentException("Room is not available");
+        }
+
         Guest guest = guestService.getGuestByRg(createHostingDTO.guestRg());
-        Address address = addressService.getAddressByGuest(guest);
-        Phone phone = phoneService.getPhoneByGuest(guest);
         Car car = carService.getCarByGuest(guest);
 
         roomService.updateRoomStatus(room, RoomStatus.OCCUPIED);
-        Hosting hosting = new Hosting(room, address, car, phone, guest);
+        Hosting hosting = new Hosting(room, car, guest);
 
         return hostingRepository.save(hosting);
     }
