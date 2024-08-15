@@ -1,6 +1,5 @@
 package hotel.data.entity;
 
-import hotel.data.entity.guest.Guest;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;

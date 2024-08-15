@@ -1,19 +1,18 @@
 package hotel.domain.service;
 
 import hotel.data.dto.hosting.CreateHostingDTO;
-import hotel.data.entity.Address;
 import hotel.data.entity.Car;
-import hotel.data.entity.Phone;
-import hotel.data.entity.guest.Guest;
-import hotel.data.entity.hosting.Hosting;
+import hotel.data.entity.Guest;
+import hotel.data.entity.Hosting;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
-import hotel.domain.exceptions.GuestAddressNotFoundException;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.HostingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static jakarta.transaction.Transactional.TxType.MANDATORY;
 
@@ -25,16 +24,12 @@ public class HostingService {
     private final RoomService roomService;
     private final GuestService guestService;
     private final CarService carService;
-    private final AddressService addressService;
-    private final PhoneService phoneService;
 
     public HostingService(HostingRepository hostingRepository, RoomService roomService, GuestService guestService, CarService carService, AddressService addressService, PhoneService phoneService) {
         this.hostingRepository = hostingRepository;
         this.roomService = roomService;
         this.guestService = guestService;
         this.carService = carService;
-        this.addressService = addressService;
-        this.phoneService = phoneService;
     }
 
     public Hosting createHosting(CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
@@ -53,4 +48,15 @@ public class HostingService {
         return hostingRepository.save(hosting);
     }
 
+    public List<Hosting> getAllHostings() {
+        return hostingRepository.findAll().stream().filter(hosting -> hosting.getRoom().getStatus() == RoomStatus.OCCUPIED).toList();
+    }
+
+    public Hosting getHostingById(int id) {
+        return hostingRepository.findById(id).orElse(null);
+    }
+
+    public Hosting getHostingByRoomNumber(String roomNumber) {
+        return hostingRepository.findByRoomNumber(roomNumber);
+    }
 }

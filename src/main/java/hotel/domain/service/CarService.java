@@ -1,7 +1,7 @@
 package hotel.domain.service;
 
 import hotel.data.entity.Car;
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import hotel.domain.repository.CarRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

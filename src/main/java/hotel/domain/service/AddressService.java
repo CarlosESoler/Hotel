@@ -1,7 +1,7 @@
 package hotel.domain.service;
 
 import hotel.data.entity.Address;
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import hotel.domain.exceptions.GuestAddressNotFoundException;
 import hotel.domain.repository.AddressRepository;
 import org.springframework.context.annotation.Lazy;

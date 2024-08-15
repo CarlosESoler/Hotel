@@ -1,9 +1,8 @@
 package hotel.data.entity.room;
 
 import hotel.data.dto.room.CreateRoomDTO;
-import hotel.data.entity.guest.Guest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import hotel.data.entity.hosting.Hosting;
+import hotel.data.entity.Hosting;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String number;

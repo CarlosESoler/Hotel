@@ -1,8 +1,6 @@
-package hotel.data.entity.guest;
+package hotel.data.entity;
 
 import hotel.data.dto.CreateGuestDTO;
-import hotel.data.entity.Address;
-import hotel.data.entity.Phone;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CurrentTimestamp;

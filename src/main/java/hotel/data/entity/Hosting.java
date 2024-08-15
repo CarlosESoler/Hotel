@@ -1,9 +1,5 @@
-package hotel.data.entity.hosting;
+package hotel.data.entity;
 
-import hotel.data.entity.Address;
-import hotel.data.entity.Car;
-import hotel.data.entity.guest.Guest;
-import hotel.data.entity.Phone;
 import hotel.data.entity.room.Room;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -13,6 +9,7 @@ import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+
 @Entity
 @Data
 public class Hosting {
@@ -22,6 +19,7 @@ public class Hosting {
 
     @CurrentTimestamp
     private LocalDateTime checkIn;
+
     @LastModifiedDate
     private LocalDateTime checkOut;
 

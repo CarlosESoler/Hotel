@@ -1,9 +1,8 @@
 package hotel.domain.service;
 
-import hotel.data.dto.AddGuestAddressDTO;
 import hotel.data.dto.CreateGuestDTO;
 import hotel.data.entity.Address;
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.repository.GuestRepository;

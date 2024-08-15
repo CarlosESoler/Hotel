@@ -3,12 +3,11 @@ package hotel.domain.controller;
 
 import hotel.data.dto.CreateGuestDTO;
 import hotel.data.entity.Address;
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.GuestService;
 import jakarta.transaction.Transactional;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package hotel.domain.service;
 
 
-import hotel.data.entity.guest.Guest;
+import hotel.data.entity.Guest;
 import hotel.data.entity.Phone;
 import hotel.domain.repository.PhoneRepository;
 import jakarta.transaction.Transactional;

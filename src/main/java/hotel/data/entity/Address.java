@@ -1,7 +1,6 @@
 package hotel.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import hotel.data.entity.guest.Guest;
 import jakarta.persistence.*;
 import lombok.Data;
 
