@@ -1,6 +1,6 @@
 package hotel.domain.service;
 
-import hotel.data.dto.CreateGuestDTO;
+import hotel.data.dto.GuestDTO;
 import hotel.data.entity.Address;
 import hotel.data.entity.Guest;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
@@ -35,7 +35,7 @@ public class GuestService {
      * @param createGuestDTO
      * @return Guest
      */
-    public Guest createGuest(@NotNull CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsWithRgException {
+    public Guest createGuest(@NotNull GuestDTO.CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsWithRgException {
 
         String formattedRg = formatRg(createGuestDTO.rg());
         String formattedDocument = formatDocument(createGuestDTO.document());
@@ -54,7 +54,7 @@ public class GuestService {
             throw new IllegalArgumentException("CPF deve conter 14 dígitos");
         }
 
-        Guest newGuest = new Guest(createGuestDTO);
+        Guest newGuest = createGuestDTO.toGuestDTO().toEntity();
         newGuest.setDocument(formattedDocument);
         newGuest.setRg(formattedRg);
         return guestRepository.save(newGuest);

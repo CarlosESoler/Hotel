@@ -1,6 +1,5 @@
 package hotel.data.entity;
 
-import hotel.data.dto.CreateGuestDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CurrentTimestamp;
@@ -34,21 +33,4 @@ public class Guest {
     private List<Address> addresses = new ArrayList<>();
 
     // TODO - Make a list of companions
-
-    public Guest(CreateGuestDTO createGuestDTO) {
-        this.rg = createGuestDTO.rg();
-        this.document = createGuestDTO.document();
-        this.dateOfBirth = createGuestDTO.dateOfBirth();
-        this.name = createGuestDTO.name();
-        this.lastName = createGuestDTO.lastName();
-        this.motherName = createGuestDTO.motherName();
-        this.email = createGuestDTO.email();
-
-        this.addresses.add(new Address(createGuestDTO.address(), this));
-        this.phones.add(new Phone(createGuestDTO.phone(), this));
-    }
-
-    public Guest() {
-
-    }
 }

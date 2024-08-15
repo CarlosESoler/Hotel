@@ -36,9 +36,8 @@ public class Hosting {
     public Hosting() {
     }
 
-    public Hosting(Room room, @Nullable Car car, Guest guest) {
+    public Hosting(Room room, Guest guest) {
         this.room = room;
-        this.car = car;
         this.guest = guest;
     }
 }

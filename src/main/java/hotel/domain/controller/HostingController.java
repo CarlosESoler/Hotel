@@ -1,6 +1,6 @@
 package hotel.domain.controller;
 
-import hotel.data.dto.hosting.CreateHostingDTO;
+import hotel.data.dto.HostingDTO;
 import hotel.data.entity.Hosting;
 import hotel.domain.exceptions.guest.GuestNotFoundException;
 import hotel.domain.exceptions.room.RoomNotFoundException;
@@ -22,7 +22,7 @@ public class HostingController {
     }
 
     @PostMapping
-    public ResponseEntity<Hosting> createHosting(@RequestBody CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
+    public ResponseEntity<Hosting> createHosting(@RequestBody HostingDTO.CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
         return ResponseEntity.ok(hostingService.createHosting(createHostingDTO));
     }
 

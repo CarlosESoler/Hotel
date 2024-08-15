@@ -1,6 +1,6 @@
 package hotel.domain.service;
 
-import hotel.data.dto.hosting.CreateHostingDTO;
+import hotel.data.dto.HostingDTO;
 import hotel.data.entity.Car;
 import hotel.data.entity.Guest;
 import hotel.data.entity.Hosting;
@@ -32,7 +32,7 @@ public class HostingService {
         this.carService = carService;
     }
 
-    public Hosting createHosting(CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
+    public Hosting createHosting(HostingDTO.CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
         Room room = roomService.getRoomByNumber(createHostingDTO.roomNumber());
 
         if(room.getStatus() != RoomStatus.AVAILABLE) {
@@ -43,7 +43,7 @@ public class HostingService {
         Car car = carService.getCarByGuest(guest);
 
         roomService.updateRoomStatus(room, RoomStatus.OCCUPIED);
-        Hosting hosting = new Hosting(room, car, guest);
+        Hosting hosting = createHostingDTO.toHostingDTO(room, car, guest).toEntity();
 
         return hostingRepository.save(hosting);
     }

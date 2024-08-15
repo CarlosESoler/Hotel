@@ -1,7 +1,6 @@
 package hotel.domain.controller;
 
-
-import hotel.data.dto.CreateGuestDTO;
+import hotel.data.dto.GuestDTO;
 import hotel.data.entity.Address;
 import hotel.data.entity.Guest;
 import hotel.domain.exceptions.guest.GuestAlreadyExistsWithRgException;
@@ -26,7 +25,7 @@ public class GuestController {
     }
 
     @PostMapping
-    public ResponseEntity<Guest> createGuest(@RequestBody CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsWithRgException {
+    public ResponseEntity<Guest> createGuest(@RequestBody GuestDTO.CreateGuestDTO createGuestDTO) throws GuestAlreadyExistsWithRgException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(guestService.createGuest(createGuestDTO));
     }
