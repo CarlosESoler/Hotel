@@ -2,8 +2,8 @@ package hotel.domain.controller;
 
 import hotel.data.entity.Address;
 import hotel.data.entity.Guest;
-import hotel.domain.exceptions.GuestAddressNotFoundException;
-import hotel.domain.exceptions.guest.GuestNotFoundException;
+import hotel.exceptions.GuestAddressNotFoundException;
+import hotel.exceptions.guest.GuestNotFoundException;
 import hotel.domain.service.AddressService;
 import hotel.domain.service.GuestService;
 import jakarta.transaction.Transactional;

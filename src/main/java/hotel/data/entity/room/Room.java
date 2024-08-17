@@ -1,6 +1,6 @@
 package hotel.data.entity.room;
 
-import hotel.data.dto.room.CreateRoomDTO;
+import hotel.data.dto.CreateRoomDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hotel.data.entity.Hosting;
 import jakarta.persistence.*;
