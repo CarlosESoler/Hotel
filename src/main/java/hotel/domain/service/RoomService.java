@@ -1,10 +1,10 @@
 package hotel.domain.service;
 
-import hotel.data.dto.room.CreateRoomDTO;
+import hotel.data.dto.CreateRoomDTO;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
-import hotel.domain.exceptions.room.RoomAlreadyExistsException;
-import hotel.domain.exceptions.room.RoomNotFoundException;
+import hotel.exceptions.room.RoomAlreadyExistsException;
+import hotel.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

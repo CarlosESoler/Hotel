@@ -2,8 +2,8 @@ package hotel.domain.controller;
 
 import hotel.data.dto.HostingDTO;
 import hotel.data.entity.Hosting;
-import hotel.domain.exceptions.guest.GuestNotFoundException;
-import hotel.domain.exceptions.room.RoomNotFoundException;
+import hotel.exceptions.guest.GuestNotFoundException;
+import hotel.exceptions.room.RoomNotFoundException;
 import hotel.domain.service.HostingService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
