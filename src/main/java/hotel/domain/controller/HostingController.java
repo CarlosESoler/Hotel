@@ -14,6 +14,7 @@ import java.util.List;
 @Transactional
 @RestController
 @RequestMapping("/hosting")
+@CrossOrigin(origins = "http://localhost:5173")
 public class HostingController {
     HostingService hostingService;
 
