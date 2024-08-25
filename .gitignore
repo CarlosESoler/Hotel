@@ -35,11 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
-<<<<<<< Updated upstream
-/src/main/resources/app.key
 =======
 
 ### Key ###
 *.key
 *.pub
->>>>>>> Stashed changes
