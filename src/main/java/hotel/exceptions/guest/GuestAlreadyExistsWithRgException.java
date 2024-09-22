@@ -1,4 +1,4 @@
-package hotel.domain.exceptions.guest;
+package hotel.exceptions.guest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

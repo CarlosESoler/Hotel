@@ -1,4 +1,4 @@
-package hotel.data.dto.room;
+package hotel.data.dto;
 
 import hotel.data.entity.room.RoomStatus;
 import hotel.data.entity.room.RoomType;

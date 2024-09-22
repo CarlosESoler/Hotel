@@ -6,9 +6,9 @@ import hotel.data.entity.Guest;
 import hotel.data.entity.Hosting;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
-import hotel.domain.exceptions.guest.GuestNotFoundException;
-import hotel.domain.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.HostingRepository;
+import hotel.exceptions.guest.GuestNotFoundException;
+import hotel.exceptions.room.RoomNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
