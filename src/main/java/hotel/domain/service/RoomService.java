@@ -19,7 +19,7 @@ public class RoomService {
 
     RoomRepository roomRepository;
 
-    public RoomService(RoomRepository roomRepository, GuestService guestService) {
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
@@ -32,7 +32,7 @@ public class RoomService {
     public Room createRoom(CreateRoomDTO createRoomDTO) throws RoomAlreadyExistsException {
         Room foundedRoom = roomRepository.findByNumber(createRoomDTO.number());
 
-        if(foundedRoom != null) {
+        if (foundedRoom != null) {
             throw new RoomAlreadyExistsException();
         }
 
