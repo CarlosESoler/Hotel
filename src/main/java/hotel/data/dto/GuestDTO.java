@@ -19,17 +19,16 @@ public record GuestDTO(
         List<Address> addresses) {
 
     public Guest toEntity() {
-        Guest guest = Guest.builder()
-                .rg(rg())
-                .document(document())
-                .dateOfBirth(dateOfBirth())
-                .name(name())
-                .lastName(lastName())
-                .motherName(motherName())
-                .email(email())
-                .phones(phones())
-                .addresses(addresses())
-                .build();
+        Guest guest = new Guest();
+        guest.setRg(rg());
+        guest.setDocument(document());
+        guest.setDateOfBirth(dateOfBirth());
+        guest.setName(name());
+        guest.setLastName(lastName());
+        guest.setMotherName(motherName());
+        guest.setEmail(email());
+        guest.setPhones(phones());
+        guest.setAddresses(addresses());
         return guest;
     }
 

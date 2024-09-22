@@ -15,14 +15,14 @@ import java.time.Instant;
 @Service
 public class LoginService {
 
-    private final JwtEncoder jwtEncoder;
+    private JwtEncoder jwtEncoder;
     UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public LoginService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtEncoder jwtEncoder) {
+        this.jwtEncoder = jwtEncoder;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.jwtEncoder = jwtEncoder;
     }
 
     public Login.LoginResponse login(Login.LoginRequest loginRequest) {
@@ -37,6 +37,7 @@ public class LoginService {
                 .claim("username", user.getName())
                 .expiresAt(Instant.now().plusSeconds(300L))
                 .issuedAt(Instant.now())
+                .claim("roles", user.getRoles())
                 .build();
 
         String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
