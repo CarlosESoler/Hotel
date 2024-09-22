@@ -6,9 +6,9 @@ import hotel.data.entity.Guest;
 import hotel.data.entity.Hosting;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
+import hotel.domain.repository.HostingRepository;
 import hotel.exceptions.guest.GuestNotFoundException;
 import hotel.exceptions.room.RoomNotFoundException;
-import hotel.domain.repository.HostingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class HostingService {
     private final GuestService guestService;
     private final CarService carService;
 
-    public HostingService(HostingRepository hostingRepository, RoomService roomService, GuestService guestService, CarService carService, AddressService addressService, PhoneService phoneService) {
+    public HostingService(HostingRepository hostingRepository, RoomService roomService, GuestService guestService, CarService carService) {
         this.hostingRepository = hostingRepository;
         this.roomService = roomService;
         this.guestService = guestService;
@@ -35,7 +35,7 @@ public class HostingService {
     public Hosting createHosting(HostingDTO.CreateHostingDTO createHostingDTO) throws RoomNotFoundException, GuestNotFoundException {
         Room room = roomService.getRoomByNumber(createHostingDTO.roomNumber());
 
-        if(room.getStatus() != RoomStatus.AVAILABLE) {
+        if (room.getStatus() != RoomStatus.AVAILABLE) {
             throw new IllegalArgumentException("Room is not available");
         }
 

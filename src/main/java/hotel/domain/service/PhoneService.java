@@ -22,7 +22,7 @@ public class PhoneService {
     }
 
     public Phone getPhoneById(Integer id) {
-        return phoneRepository.findById(id).orElse(null);
+        return phoneRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     public Phone getPhoneByGuest(Guest guest) {
