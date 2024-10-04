@@ -14,4 +14,14 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    public enum Values {
+        ADMIN(1L), USER(2L);
+
+        private final Long id;
+
+        Values(Long id) {
+            this.id = id;
+        }
+    }
 }

@@ -25,14 +25,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-
-    public enum Values {
-        ADMIN(1L), USER(2L);
-
-        private final Long id;
-
-        Values(Long id) {
-            this.id = id;
-        }
-    }
 }
