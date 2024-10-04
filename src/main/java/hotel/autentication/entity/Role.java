@@ -1,27 +1,27 @@
 package hotel.autentication.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
 @Entity
 @Data
+@Table(name = "role_app")
+@Getter
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
 
     public enum Values {
         ADMIN(1L), USER(2L);
 
-        private final Long id;
+        private final Long roleId;
 
-        Values(Long id) {
-            this.id = id;
+        Values(Long roleId) {
+            this.roleId = roleId;
         }
     }
 }

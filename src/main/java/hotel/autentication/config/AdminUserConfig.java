@@ -4,6 +4,7 @@ import hotel.autentication.entity.Role;
 import hotel.autentication.entity.User;
 import hotel.autentication.repository.RoleRepository;
 import hotel.autentication.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,18 +25,20 @@ public class AdminUserConfig implements CommandLineRunner {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
-        Role roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name());
+        Role roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name().toLowerCase());
         Optional<User> user = userRepository.findByUserName("admin");
 
-        user.ifPresentOrElse(newUser -> {
+        System.out.println(roleAdmin);
+
+        user.ifPresentOrElse(user1 -> {
                     System.out.println("User already exists");
                 },
                 () -> {
                     User newUser = new User();
-                    newUser.setName("admin");
+                    newUser.setUserName("admin");
                     newUser.setPassword(bCryptPasswordEncoder.encode("admin"));
                     newUser.setRoles(Set.of(roleAdmin));
                     userRepository.save(newUser);

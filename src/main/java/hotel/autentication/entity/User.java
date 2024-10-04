@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table(name = "user_app")
 public class User {
 
     @Id
@@ -15,10 +16,10 @@ public class User {
     private UUID uuid;
 
     @Column(unique = true)
-    private String name;
+    private String userName;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_uuid"),

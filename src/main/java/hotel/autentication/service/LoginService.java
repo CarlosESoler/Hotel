@@ -15,12 +15,12 @@ import java.time.Instant;
 @Service
 public class LoginService {
 
-    private JwtEncoder jwtEncoder;
+    private JwtEncoder nimbusJwtEncoder;
     UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public LoginService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtEncoder jwtEncoder) {
-        this.jwtEncoder = jwtEncoder;
+    public LoginService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtEncoder JwtEncoder) {
+        this.nimbusJwtEncoder = nimbusJwtEncoder;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -34,13 +34,13 @@ public class LoginService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("https://example.com")
                 .subject(user.getUuid().toString())
-                .claim("username", user.getName())
+                .claim("username", user.getUserName())
                 .expiresAt(Instant.now().plusSeconds(300L))
                 .issuedAt(Instant.now())
                 .claim("roles", user.getRoles())
                 .build();
 
-        String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        String token = nimbusJwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
         return new Login.LoginResponse(token, 300L);
     }
 
