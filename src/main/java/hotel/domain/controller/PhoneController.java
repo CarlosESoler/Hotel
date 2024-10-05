@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Transactional
-@RequestMapping("/phone")
+@RequestMapping("/phones")
 public class PhoneController {
     PhoneService phoneService;
 

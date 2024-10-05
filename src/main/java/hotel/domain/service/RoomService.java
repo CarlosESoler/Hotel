@@ -3,9 +3,9 @@ package hotel.domain.service;
 import hotel.data.dto.CreateRoomDTO;
 import hotel.data.entity.room.Room;
 import hotel.data.entity.room.RoomStatus;
+import hotel.domain.repository.RoomRepository;
 import hotel.exceptions.room.RoomAlreadyExistsException;
 import hotel.exceptions.room.RoomNotFoundException;
-import hotel.domain.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +49,8 @@ public class RoomService {
     public Room getRoomByNumber(String roomNumber) throws RoomNotFoundException {
         Room room = roomRepository.findByNumber(roomNumber);
 
-        if (room == null) {
+        if (room == null)
             throw new RoomNotFoundException();
-        }
 
         return room;
     }

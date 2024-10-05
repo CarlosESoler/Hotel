@@ -72,4 +72,24 @@ public record GuestDTO(
             );
         }
     }
+
+    public record GetGuestDTO(
+            String rg,
+            String name,
+            String lastName,
+            String motherName,
+            String email,
+            List<Phone> phones
+    ) {
+        public static GetGuestDTO fromEntity(Guest guest) {
+            return new GetGuestDTO(
+                    guest.getRg(),
+                    guest.getName(),
+                    guest.getLastName(),
+                    guest.getMotherName(),
+                    guest.getEmail(),
+                    guest.getPhones()
+            );
+        }
+    }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Transactional
-@RequestMapping("/car")
+@RequestMapping("/cars")
 public class CarController {
     CarService carService;
 

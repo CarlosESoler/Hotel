@@ -1,6 +1,7 @@
 package hotel.autentication.service;
 
-import hotel.autentication.entity.Login;
+import hotel.autentication.entity.LoginDTO;
+import hotel.autentication.entity.Role;
 import hotel.autentication.entity.User;
 import hotel.autentication.repository.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,22 +12,25 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 @Service
 public class LoginService {
 
-    private JwtEncoder nimbusJwtEncoder;
-    UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtEncoder JwtEncoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public LoginService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtEncoder JwtEncoder) {
-        this.nimbusJwtEncoder = nimbusJwtEncoder;
+    public LoginService(UserRepository userRepository,
+                        BCryptPasswordEncoder bCryptPasswordEncoder,
+                        JwtEncoder JwtEncoder) {
+        this.JwtEncoder = JwtEncoder;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Login.LoginResponse login(Login.LoginRequest loginRequest) {
-        User user = userRepository.findByUserName(loginRequest.username()).orElseThrow(() -> new BadCredentialsException("User not found"));
+    public LoginDTO.LoginResponse login(LoginDTO.LoginRequest loginRequest) {
+        User user = userRepository.findByUserName(loginRequest.userName()).orElseThrow(() -> new BadCredentialsException("User not found"));
 
         if (!isCorrectPassword(loginRequest.password(), user.getPassword()))
             throw new BadCredentialsException("Invalid password");
@@ -34,14 +38,17 @@ public class LoginService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("https://example.com")
                 .subject(user.getUuid().toString())
-                .claim("username", user.getUserName())
+                .claim("userName", user.getUserName())
                 .expiresAt(Instant.now().plusSeconds(300L))
                 .issuedAt(Instant.now())
-                .claim("roles", user.getRoles())
+                .claim("scope", user.getRoles()
+                        .stream()
+                        .map(Role::getName)
+                        .collect(Collectors.joining(" ")))
                 .build();
 
-        String token = nimbusJwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-        return new Login.LoginResponse(token, 300L);
+        String token = JwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return new LoginDTO.LoginResponse(token, 300L);
     }
 
 

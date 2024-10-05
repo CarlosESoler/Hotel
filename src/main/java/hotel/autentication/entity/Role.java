@@ -16,12 +16,12 @@ public class Role {
     private String name;
 
     public enum Values {
-        ADMIN(1L), USER(2L);
+        ADMIN(1L), BASIC(2L);
 
-        private final Long roleId;
+        private final Long id;
 
-        Values(Long roleId) {
-            this.roleId = roleId;
+        Values(Long id) {
+            this.id = id;
         }
     }
 }

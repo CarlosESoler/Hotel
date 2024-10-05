@@ -2,10 +2,10 @@ package hotel.domain.controller;
 
 import hotel.data.dto.CreateRoomDTO;
 import hotel.data.entity.room.Room;
-import hotel.exceptions.room.RoomAlreadyExistsException;
-import hotel.exceptions.room.RoomNotFoundException;
 import hotel.domain.repository.RoomRepository;
 import hotel.domain.service.RoomService;
+import hotel.exceptions.room.RoomAlreadyExistsException;
+import hotel.exceptions.room.RoomNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +15,14 @@ import java.util.Optional;
 
 @RestController
 @Transactional
-@RequestMapping("/room")
+@RequestMapping("/rooms")
 public class RoomController {
 
     RoomService roomService;
     RoomRepository roomRepository;
 
-    public RoomController(RoomService roomService, RoomRepository roomRepository) {
+    public RoomController(RoomService roomService,
+                          RoomRepository roomRepository) {
         this.roomService = roomService;
         this.roomRepository = roomRepository;
     }
@@ -50,5 +51,4 @@ public class RoomController {
     public ResponseEntity<List<Room>> getAllRoomsWithSpecificStatus(@PathVariable String status) {
         return ResponseEntity.ok(roomService.getAllRoomsWithSpecificStatus(status));
     }
-
 }
