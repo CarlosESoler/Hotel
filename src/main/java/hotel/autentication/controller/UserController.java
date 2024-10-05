@@ -26,12 +26,10 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(createUser));
     }
 
-
-    @GetMapping
-    @PreAuthorize("hasRole('ROLE_admin')")
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<List<User>> findAll() {
         return ResponseEntity.ok(userService.findAll());
     }
-
 
 }

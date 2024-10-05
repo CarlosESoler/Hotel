@@ -9,7 +9,6 @@ import hotel.exceptions.guest.GuestNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +35,6 @@ public class GuestController {
         return ResponseEntity.ok(guestService.addAddressToGuest(rg, address));
     }
 
-    @PreAuthorize("hasRole('ROLE_admin')")
     @GetMapping("/{rg}")
     public ResponseEntity<Guest> getGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.getGuestByRg(rg));
