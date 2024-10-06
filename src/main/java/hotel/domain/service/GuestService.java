@@ -3,9 +3,9 @@ package hotel.domain.service;
 import hotel.data.dto.GuestDTO;
 import hotel.data.entity.Address;
 import hotel.data.entity.Guest;
+import hotel.domain.repository.GuestRepository;
 import hotel.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.exceptions.guest.GuestNotFoundException;
-import hotel.domain.repository.GuestRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
@@ -19,19 +19,14 @@ import static jakarta.transaction.Transactional.TxType.MANDATORY;
 @Transactional(MANDATORY)
 public class GuestService {
     private final GuestRepository guestRepository;
-    private final PhoneService phoneService;
-    private final AddressService addressService;
-    private final CarService carService;
 
     public GuestService(GuestRepository guestRepository, PhoneService phoneService, AddressService addressService, CarService carService) {
         this.guestRepository = guestRepository;
-        this.phoneService = phoneService;
-        this.addressService = addressService;
-        this.carService = carService;
     }
 
     /**
      * Create a new guest
+     *
      * @param createGuestDTO
      * @return Guest
      */
@@ -46,11 +41,11 @@ public class GuestService {
             throw new GuestAlreadyExistsWithRgException(formattedRg);
         }
 
-        if(formattedRg.length() != 9) {
+        if (formattedRg.length() != 9) {
             throw new IllegalArgumentException("RG deve conter 12 dígitos");
         }
 
-        if(formattedDocument.length() != 11) {
+        if (formattedDocument.length() != 11) {
             throw new IllegalArgumentException("CPF deve conter 14 dígitos");
         }
 
@@ -99,7 +94,7 @@ public class GuestService {
     public List<Guest> getAllGuests() throws GuestNotFoundException {
         List<Guest> guests = guestRepository.findAll();
 
-        if(guests.isEmpty()) {
+        if (guests.isEmpty()) {
             throw new GuestNotFoundException();
         }
 
