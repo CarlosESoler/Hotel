@@ -25,14 +25,4 @@ public class Phone {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Guest guest;
-
-    public Phone(Phone phone, Guest guest) {
-        this.ddd = phone.getDdd();
-        this.cellPhone = phone.getCellPhone();
-        this.phoneNumber = phone.getPhoneNumber();
-        this.guest = guest;
-    }
-
-    public Phone() {
-    }
 }

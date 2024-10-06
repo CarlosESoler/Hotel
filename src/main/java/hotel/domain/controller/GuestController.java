@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Transactional
 @RequestMapping("/guests")
+@Transactional
 public class GuestController {
 
     private final GuestService guestService;

@@ -22,16 +22,4 @@ public class Address {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Guest guest;
-
-    public Address(Address address, Guest guest) {
-        this.city = address.getCity();
-        this.state = address.getState();
-        this.houseNumber = address.getHouseNumber();
-        this.reference = address.getReference();
-        this.zipCode = address.getZipCode();
-        this.guest = guest;
-    }
-
-    public Address() {
-    }
 }

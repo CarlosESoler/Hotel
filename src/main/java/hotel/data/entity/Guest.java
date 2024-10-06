@@ -32,8 +32,4 @@ public class Guest implements Serializable {
 
     @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Address> addresses = new ArrayList<>();
-
-    public Guest() {
-
-    }
 }

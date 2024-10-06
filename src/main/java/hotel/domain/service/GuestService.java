@@ -8,6 +8,7 @@ import hotel.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.exceptions.guest.GuestNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import static jakarta.transaction.Transactional.TxType.MANDATORY;
 public class GuestService {
     private final GuestRepository guestRepository;
 
-    public GuestService(GuestRepository guestRepository, PhoneService phoneService, AddressService addressService, CarService carService) {
+    public GuestService(GuestRepository guestRepository) {
         this.guestRepository = guestRepository;
     }
 
@@ -37,21 +38,20 @@ public class GuestService {
 
         Optional<Guest> foundedGuest = guestRepository.findByRg(formattedRg);
 
-        if (foundedGuest.isPresent()) {
+        if (foundedGuest.isPresent())
             throw new GuestAlreadyExistsWithRgException(formattedRg);
-        }
 
-        if (formattedRg.length() != 9) {
+        if (formattedRg.length() != 9)
             throw new IllegalArgumentException("RG deve conter 12 dígitos");
-        }
 
-        if (formattedDocument.length() != 11) {
+        if (formattedDocument.length() != 11)
             throw new IllegalArgumentException("CPF deve conter 14 dígitos");
-        }
 
-        Guest newGuest = createGuestDTO.toGuestDTO().toEntity();
+        Guest newGuest = GuestDTO.CreateGuestDTO.toEntity(createGuestDTO);
         newGuest.setDocument(formattedDocument);
         newGuest.setRg(formattedRg);
+        newGuest.getPhones().forEach(phone -> phone.setGuest(newGuest));
+        newGuest.getAddresses().forEach(address -> address.setGuest(newGuest));
         return guestRepository.save(newGuest);
     }
 
@@ -91,6 +91,7 @@ public class GuestService {
      *
      * @return List<Guest>
      */
+    @Cacheable("guests")
     public List<Guest> getAllGuests() throws GuestNotFoundException {
         List<Guest> guests = guestRepository.findAll();
 
