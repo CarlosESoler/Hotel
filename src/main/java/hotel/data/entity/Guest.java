@@ -1,14 +1,15 @@
 package hotel.data.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 import org.hibernate.annotations.CurrentTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -23,13 +24,6 @@ public class Guest implements Serializable {
     private String lastName;
     private String motherName;
     private String email;
-
     @CurrentTimestamp
     private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Phone> phones = new ArrayList<>();
-
-    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Address> addresses = new ArrayList<>();
 }

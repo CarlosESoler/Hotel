@@ -3,6 +3,7 @@ package hotel.domain.controller;
 import hotel.data.dto.GuestDTO;
 import hotel.data.entity.Address;
 import hotel.data.entity.Guest;
+import hotel.domain.cache.CacheService;
 import hotel.domain.service.GuestService;
 import hotel.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.exceptions.guest.GuestNotFoundException;
@@ -20,7 +21,7 @@ public class GuestController {
 
     private final GuestService guestService;
 
-    public GuestController(GuestService guestService) {
+    public GuestController(GuestService guestService, CacheService cacheService) {
         this.guestService = guestService;
     }
 
@@ -30,18 +31,13 @@ public class GuestController {
                 .body(guestService.createGuest(createGuestDTO));
     }
 
-    @PatchMapping("/{rg}")
-    public ResponseEntity<Guest> addGuestAddress(@PathVariable String rg, @RequestBody Address address) throws GuestNotFoundException {
-        return ResponseEntity.ok(guestService.addAddressToGuest(rg, address));
-    }
-
     @GetMapping("/{rg}")
     public ResponseEntity<Guest> getGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.getGuestByRg(rg));
     }
 
     @GetMapping
-    public ResponseEntity<List<Guest>> getAllGuests() throws GuestNotFoundException {
+    public ResponseEntity<List<GuestDTO.GetGuestDTO>> getAllGuests() {
         return ResponseEntity.ok(guestService.getAllGuests());
     }
 
@@ -53,5 +49,10 @@ public class GuestController {
     @DeleteMapping("/{rg}")
     public ResponseEntity<String> deleteGuestByRg(@PathVariable String rg) throws GuestNotFoundException {
         return ResponseEntity.ok(guestService.deleteGuestByRg(rg));
+    }
+
+    @PatchMapping("/{rg}")
+    public ResponseEntity<Guest> addGuestAddress(@PathVariable String rg, @RequestBody Address address) throws GuestNotFoundException {
+        return ResponseEntity.ok(guestService.addAddressToGuest(rg, address));
     }
 }

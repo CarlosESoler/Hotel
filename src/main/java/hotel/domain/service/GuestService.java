@@ -3,7 +3,11 @@ package hotel.domain.service;
 import hotel.data.dto.GuestDTO;
 import hotel.data.entity.Address;
 import hotel.data.entity.Guest;
+import hotel.data.entity.Phone;
+import hotel.domain.cache.CacheService;
+import hotel.domain.repository.AddressRepository;
 import hotel.domain.repository.GuestRepository;
+import hotel.domain.repository.PhoneRepository;
 import hotel.exceptions.guest.GuestAlreadyExistsWithRgException;
 import hotel.exceptions.guest.GuestNotFoundException;
 import jakarta.transaction.Transactional;
@@ -11,6 +15,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +25,13 @@ import static jakarta.transaction.Transactional.TxType.MANDATORY;
 @Transactional(MANDATORY)
 public class GuestService {
     private final GuestRepository guestRepository;
+    private final PhoneRepository phoneRepository;
+    private final AddressRepository addressRepository;
 
-    public GuestService(GuestRepository guestRepository) {
+    public GuestService(CacheService cacheService, GuestRepository guestRepository, PhoneRepository phoneRepository, AddressRepository addressRepository) {
         this.guestRepository = guestRepository;
+        this.phoneRepository = phoneRepository;
+        this.addressRepository = addressRepository;
     }
 
     /**
@@ -50,15 +59,12 @@ public class GuestService {
         Guest newGuest = GuestDTO.CreateGuestDTO.toEntity(createGuestDTO);
         newGuest.setDocument(formattedDocument);
         newGuest.setRg(formattedRg);
-        newGuest.getPhones().forEach(phone -> phone.setGuest(newGuest));
-        newGuest.getAddresses().forEach(address -> address.setGuest(newGuest));
         return guestRepository.save(newGuest);
     }
 
     public Guest addAddressToGuest(String rg, Address address) throws GuestNotFoundException {
         Guest guest = getGuestByRg(rg);
         address.setGuest(guest);
-        guest.getAddresses().add(address);
         return guestRepository.saveAndFlush(guest);
     }
 
@@ -91,15 +97,17 @@ public class GuestService {
      *
      * @return List<Guest>
      */
-    @Cacheable("guests")
-    public List<Guest> getAllGuests() throws GuestNotFoundException {
-        List<Guest> guests = guestRepository.findAll();
-
-        if (guests.isEmpty()) {
-            throw new GuestNotFoundException();
+    @Cacheable(value = "guests")
+    public List<GuestDTO.GetGuestDTO> getAllGuests() {
+        final List<Guest> guests = new ArrayList<>(guestRepository.findAll());
+        final List<GuestDTO.GetGuestDTO> guestsDTO = new ArrayList<>();
+        for (Guest guest : guests) {
+            List<Address> addresses = addressRepository.findByGuestId(guest.getId());
+            List<Phone> phones = phoneRepository.findByGuestId(guest.getId());
+            GuestDTO.GetGuestDTO guestDTO = GuestDTO.GetGuestDTO.toDTO(guest, addresses, phones);
+            guestsDTO.add(guestDTO);
         }
-
-        return guests;
+        return guestsDTO;
     }
 
     public Guest saveGuest(Guest guest) {
