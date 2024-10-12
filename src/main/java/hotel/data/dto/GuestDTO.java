@@ -4,6 +4,7 @@ import hotel.data.entity.Address;
 import hotel.data.entity.Guest;
 import hotel.data.entity.Phone;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,25 +15,9 @@ public record GuestDTO(
         String name,
         String lastName,
         String motherName,
-        String email,
-        List<Phone> phones,
-        List<Address> addresses) {
-
-    public Guest toEntity() {
-        Guest guest = new Guest();
-        guest.setRg(rg());
-        guest.setDocument(document());
-        guest.setDateOfBirth(dateOfBirth());
-        guest.setName(name());
-        guest.setLastName(lastName());
-        guest.setMotherName(motherName());
-        guest.setEmail(email());
-        guest.setPhones(phones());
-        guest.setAddresses(addresses());
-        return guest;
-    }
-
-    public static GuestDTO fromEntity(Guest guest) {
+        String email
+) {
+    public static GuestDTO toDTO(Guest guest) {
         return new GuestDTO(
                 guest.getRg(),
                 guest.getDocument(),
@@ -40,9 +25,7 @@ public record GuestDTO(
                 guest.getName(),
                 guest.getLastName(),
                 guest.getMotherName(),
-                guest.getEmail(),
-                guest.getPhones(),
-                guest.getAddresses()
+                guest.getEmail()
         );
     }
 
@@ -53,42 +36,44 @@ public record GuestDTO(
             String name,
             String lastName,
             String motherName,
-            String email,
-            Phone phone,
-            Address address
+            String email
     ) {
-
-        public GuestDTO toGuestDTO() {
-            return new GuestDTO(
-                    rg(),
-                    document(),
-                    dateOfBirth(),
-                    name(),
-                    lastName(),
-                    motherName(),
-                    email(),
-                    List.of(phone),
-                    List.of(address)
-            );
+        public static Guest toEntity(CreateGuestDTO createGuestDTO) {
+            Guest guest = new Guest();
+            guest.setRg(createGuestDTO.rg());
+            guest.setDocument(createGuestDTO.document());
+            guest.setDateOfBirth(createGuestDTO.dateOfBirth());
+            guest.setName(createGuestDTO.name());
+            guest.setLastName(createGuestDTO.lastName());
+            guest.setMotherName(createGuestDTO.motherName());
+            guest.setEmail(createGuestDTO.email());
+            return guest;
         }
     }
 
     public record GetGuestDTO(
             String rg,
+            String document,
+            LocalDate dateOfBirth,
             String name,
             String lastName,
             String motherName,
             String email,
+            List<Address> addresses,
             List<Phone> phones
-    ) {
-        public static GetGuestDTO fromEntity(Guest guest) {
+    ) implements Serializable {
+
+        public static GetGuestDTO toDTO(Guest guest, List<Address> addresses, List<Phone> phones) {
             return new GetGuestDTO(
                     guest.getRg(),
+                    guest.getDocument(),
+                    guest.getDateOfBirth(),
                     guest.getName(),
                     guest.getLastName(),
                     guest.getMotherName(),
                     guest.getEmail(),
-                    guest.getPhones()
+                    addresses,
+                    phones
             );
         }
     }

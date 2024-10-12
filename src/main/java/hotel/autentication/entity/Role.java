@@ -2,12 +2,10 @@ package hotel.autentication.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 
 @Entity
 @Data
 @Table(name = "role_app")
-@Getter
 public class Role {
 
     @Id

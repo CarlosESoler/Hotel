@@ -4,6 +4,7 @@ import hotel.autentication.entity.Role;
 import hotel.autentication.entity.User;
 import hotel.autentication.repository.RoleRepository;
 import hotel.autentication.repository.UserRepository;
+import hotel.domain.cache.CacheService;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,16 +19,19 @@ public class AdminUserConfig implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CacheService cacheService;
 
-    public AdminUserConfig(RoleRepository roleRepository, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AdminUserConfig(RoleRepository roleRepository, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, CacheService cacheService) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.cacheService = cacheService;
     }
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        cacheService.clearCache("guests");
         Role roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name());
         Optional<User> user = userRepository.findByUserName("admin");
 

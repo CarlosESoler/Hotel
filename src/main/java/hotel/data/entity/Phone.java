@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Entity
 @Data
-public class Phone {
+public class Phone implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,14 +27,4 @@ public class Phone {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Guest guest;
-
-    public Phone(Phone phone, Guest guest) {
-        this.ddd = phone.getDdd();
-        this.cellPhone = phone.getCellPhone();
-        this.phoneNumber = phone.getPhoneNumber();
-        this.guest = guest;
-    }
-
-    public Phone() {
-    }
 }

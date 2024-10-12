@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Entity
 @Data
-public class Address {
+public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,16 +24,4 @@ public class Address {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Guest guest;
-
-    public Address(Address address, Guest guest) {
-        this.city = address.getCity();
-        this.state = address.getState();
-        this.houseNumber = address.getHouseNumber();
-        this.reference = address.getReference();
-        this.zipCode = address.getZipCode();
-        this.guest = guest;
-    }
-
-    public Address() {
-    }
 }
