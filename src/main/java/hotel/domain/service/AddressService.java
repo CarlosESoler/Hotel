@@ -26,5 +26,5 @@ public class AddressService {
 
     public List<Address> getAddressesByGuest(Guest guest) throws GuestAddressNotFoundException {
         return addressRepository.findAddressByGuest(guest).orElseThrow(GuestAddressNotFoundException::new);
-
+    }
 }
