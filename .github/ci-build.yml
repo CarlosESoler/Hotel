@@ -16,3 +16,5 @@ jobs:
           distribution: 'temurin'
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Run unit tests
+        run: ./gradlew test
