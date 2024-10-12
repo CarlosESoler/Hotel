@@ -95,7 +95,7 @@ public class GuestService {
     /**
      * Get all guests
      *
-     * @return List<Guest>
+     * @return List<GuestDTO.GetGuestDTO>
      */
     @Cacheable(value = "guests")
     public List<GuestDTO.GetGuestDTO> getAllGuests() {
