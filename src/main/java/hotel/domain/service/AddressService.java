@@ -24,7 +24,7 @@ public class AddressService {
         this.guestService = guestService;
     }
 
-    public List<Address> getAddressesByGuest(Guest guest) throws GuestAddressNotFoundException {
+    public List<Address> getAddressesByGuest(Guest guest) {
         return addressRepository.findAddressByGuest(guest).orElseThrow(GuestAddressNotFoundException::new);
     }
 }
